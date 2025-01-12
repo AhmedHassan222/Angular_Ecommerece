@@ -1,0 +1,16 @@
+<footer class="container d-flex justify-content-center align-items-center  py-4  ">
+  <div>
+    <div class="d-flex justify-content-center mb-3">
+      @for (icon of socialMediaIcons; track $index) {
+      <i [class]="icon.icon" style="font-size: 0.9rem"></i>
+      }
+    </div>
+    <div class="d-flex justify-content-between align-items-start ">
+      <p class="me-3">© {{ year }} E-COMMERCE All rights reserved</p>
+      <div class="d-flex align-items-center">
+        <img src="./assets/visa.svg" alt="visa" width="30" height="30" />
+        <img src="./assets/master-card.svg" alt="master-card" width="30" height="30" />
+      </div>
+    </div>
+  </div>
+</footer>

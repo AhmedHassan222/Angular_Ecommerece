@@ -1,0 +1,32 @@
+<section class="section">
+    <div class="container-fluid">
+        <table class="table overflow-x-auto w-100 table-striped ">
+            <thead >
+                <tr >
+                    <th scope="col">Data</th>
+                    <th scope="col">ID</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Payment</th>
+                    <th scope="col">Total</th>
+                    <th scope="col">Items</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (order of orders; track $index) {
+                <tr>
+                    <td>{{order.paidAt | date}}</td>
+                    <td>{{order.id}}</td>
+                    <td>{{order.isDelivered ? "Delivered":"Pending"}}</td>
+                    <td>{{order.paymentMethodType}}</td>
+                    <td>{{order.totalOrderPrice | currency:"EGP"}}</td>
+                    <td>{{order.cartItems.length}}</td>
+
+                </tr>
+                }
+                @empty { 
+                    <h3 class="h5 my-4">No Orders!</h3>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>

@@ -1,0 +1,30 @@
+<section class="section py-4">
+    <div class="container-fluid w-custom ">
+        <h3 class="my-4 fw-semibold">Hello {{userName.split(' ', 2).join(' ')| titlecase}}</h3>
+        <button routerLink="/favarite"
+            class="w-100 py-2 fw-medium d-flex align-items-start justify-content-between pt-3 px-4  pb-0 fs-6 border-0 my-2">
+            <p>Wishlist</p> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button routerLink="/cart"
+            class="w-100 py-2 fw-medium d-flex align-items-start justify-content-between pt-3 px-4  pb-0 fs-6 border-0 my-2">
+            <p>Shopping Cart </p><i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button routerLink="/allorders"
+            class="w-100 py-2 fw-medium d-flex align-items-start justify-content-between pt-3 px-4  pb-0 fs-6 border-0 my-2">
+            <p>My Orders</p> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button routerLink="/edit-profile"
+            class="w-100 py-2 fw-medium d-flex align-items-start justify-content-between pt-3 px-4  pb-0 fs-6 border-0 my-2">
+            <p>Edit Profile </p><i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button routerLink="/change-password"
+            class="w-100 py-2 fw-medium d-flex align-items-start justify-content-between pt-3 px-4  pb-0 fs-6 border-0 my-2">
+            <p>Change Password</p><i class="fa-solid fa-arrow-right"></i>
+        </button>
+        <button (click)="logOut()"
+            class="w-100 py-2 fw-medium d-flex align-items-start justify-content-between pt-3 px-4  pb-0 fs-6 border-0 my-2">
+            <p>Sigh out</p> <i class="fa-solid fa-arrow-right"></i>
+        </button>
+
+    </div>
+</section>

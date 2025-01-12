@@ -1,0 +1,39 @@
+<section class="section">
+    <div class="container-fluid">
+        <div class="my-3">
+            <h3 class="h5 fw-medium">Wishlist ({{prodcuts.length}} items)</h3>
+        </div>
+        @if(placholderLoading){
+        <app-placholder-loading />
+        }
+        @else {
+        <div class="row g-3">
+            @for (product of prodcuts; track product.id) {
+            <div class=" col-6 col-sm-6 col-md-3 col-lg-2 ">
+                <div class=" product position-relative">
+                    <img [routerLink]="['/products', product.id]" [src]="product.imageCover" class="w-100"
+                        [alt]="product.title"><i (click)="removeFromFavarite(product.id)"
+                        class="fa-solid bg-light text-danger fa-x position-absolute p-2 rounded-circle end-0 top-0 m-3 fs-6"></i>
+                    <div class="p-3">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 [routerLink]="['/products', product.id]" class="h6 my-0">{{product.title.split('
+                                    ',2).join(' ')}}</h3>
+                                <p class="fw-bold my-0"> {{product.price | currency : 'EGP'}}</p>
+                            </div>
+                            <span (click)="addToCart(product.id)" class="shopping-cart px-3 py-2 rounded-circle "><i
+                                    class="fa-solid fa-shopping-bag"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            }
+            @empty {
+            <h3 class="my-4 h5 text-muted fw-medium">No item was been added yet.</h3>
+            }
+        </div>
+        }
+    </div>
+</section>
+<app-action-loading [loading]="isLoading" />

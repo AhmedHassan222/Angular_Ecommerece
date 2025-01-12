@@ -1,0 +1,90 @@
+<section class="section">
+  <div class="w-custom mx-auto">
+    <h3 class="fs-5 fw-semibold">Create your account </h3>
+    <form class="mb-2" (ngSubmit)="sendData()" [formGroup]="registerForm">
+      <div class="form-floating my-3">
+        <input id="name" type="text" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+          placeholder="Name" formControlName="name" />
+        <label for="name">Name</label>
+
+        @if ((registerForm.get('name')?.touched || registerForm.get('name')?.dirty) && registerForm.get('name')?.errors)
+        {
+        @if (registerForm.get('name')?.getError('required')) {
+        <p class="text-danger  small pt-1">Name is required</p>
+        }
+        }
+      </div>
+      <div class="form-floating my-3">
+        <input id="email" type="text" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+          placeholder="Email" formControlName="email" />
+        <label for="email">email</label>
+
+        @if ((registerForm.get('email')?.touched || registerForm.get('email')?.dirty) &&
+        registerForm.get('email')?.errors) {
+        @if (registerForm.get('email')?.getError('required')) {
+        <p class="text-danger  small pt-1">Email is required</p>
+        }
+        @if (registerForm.get('email')?.getError('email')) {
+        <p class="text-danger  small pt-1">Invalid email format</p>
+        }
+        }
+      </div>
+      <div class="form-floating my-3">
+        <input id="password" type="password" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+          placeholder="Password" formControlName="password" />
+        <label for="password">Password</label>
+
+        @if ((registerForm.get('password')?.touched || registerForm.get('password')?.dirty) &&
+        registerForm.get('password')?.errors) {
+        @if (registerForm.get('password')?.getError('required')) {
+        <p class="text-danger  small pt-1">Password is required</p>
+        }
+        @if (registerForm.get('password')?.getError('pattern')) {
+        <p class="text-danger  small pt-1">Password must be 6 digit at least.</p>
+        }
+        }
+      </div>
+      <div class="form-floating my-3">
+        <input id="rePassword" type="password"
+          class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1" placeholder="Conferm Password"
+          formControlName="rePassword" />
+        <label for="rePassword">Confirm Password</label>
+
+        @if ( (registerForm.get('rePassword')?.touched || registerForm.get('rePassword')?.dirty) &&
+        registerForm.getError('mismatch')) {
+        <p class="text-danger  small pt-1">confirm password must match password.</p>
+        }
+      </div>
+      <div id="phone" class="form-floating my-3">
+        <input type="tel" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1" placeholder="Phone"
+          formControlName="phone" />
+        <label for="phone">Phone</label>
+
+        @if ((registerForm.get('phone')?.touched || registerForm.get('phone')?.dirty) &&
+        registerForm.get('phone')?.errors) {
+        @if (registerForm.get('phone')?.getError('required')) {
+        <p class="text-danger  small pt-1">Phone is required</p>
+        }
+        @if (registerForm.get('phone')?.getError('pattern')) {
+        <p class="text-danger  small pt-1">Access egyption phone only.</p>
+        }
+        }
+      </div>
+      @if (errorMessage) {
+      <p class="fs-6 text-danger">{{errorMessage}}</p>
+      }
+      <button type="submit" class="border-0 btn-special py-3 w-100 rounded-1 mt-2 fs-6 fw-normal  text-white"
+        [disabled]="registerForm.invalid || isLoading">
+        Create Account
+        @if (isLoading) {
+        <i class="fa-spin fa-spinner fa ms-2"> </i>
+        }
+
+      </button>
+    </form>
+    <p class="fs-6  text-center fw-medium mt-3">
+      Already have an account?
+      <a class="ms-2 text-black " routerLink="/login">Sign in</a>
+    </p>
+  </div>
+</section>

@@ -1,0 +1,61 @@
+<section class="section py-4">
+    <div class="w-custom mx-auto">
+        <h3 class="fs-5 fw-semibold">Edit Profile</h3>
+        <form class="mb-2" (ngSubmit)="sendData()" [formGroup]="editProfileForm">
+            <div class="form-floating my-3">
+                <input id="name" type="text" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+                    placeholder="Name" formControlName="name" />
+                <label for="name">Name</label>
+
+                @if ((editProfileForm.get('name')?.touched || editProfileForm.get('name')?.dirty) &&
+                editProfileForm.get('name')?.errors)
+                {
+                @if (editProfileForm.get('name')?.getError('required')) {
+                <p class="text-danger  small pt-1">Name is required</p>
+                }
+                }
+            </div>
+            <div class="form-floating my-3">
+                <input id="email" type="text" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+                    placeholder="Email" formControlName="email" />
+                <label for="email">email</label>
+
+                @if ((editProfileForm.get('email')?.touched || editProfileForm.get('email')?.dirty) &&
+                editProfileForm.get('email')?.errors) {
+                @if (editProfileForm.get('email')?.getError('required')) {
+                <p class="text-danger  small pt-1">Email is required</p>
+                }
+                @if (editProfileForm.get('email')?.getError('email')) {
+                <p class="text-danger  small pt-1">Invalid email format</p>
+                }
+                }
+            </div>
+            <div id="phone" class="form-floating my-3">
+                <input type="tel" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+                    placeholder="Phone" formControlName="phone" />
+                <label for="phone">Phone</label>
+
+                @if ((editProfileForm.get('phone')?.touched || editProfileForm.get('phone')?.dirty) &&
+                editProfileForm.get('phone')?.errors) {
+                @if (editProfileForm.get('phone')?.getError('required')) {
+                <p class="text-danger  small pt-1">Phone is required</p>
+                }
+                @if (editProfileForm.get('phone')?.getError('pattern')) {
+                <p class="text-danger  small pt-1">Access egyption phone only.</p>
+                }
+                }
+            </div>
+            @if (errorMessage) {
+            <p class="fs-6 text-danger">{{errorMessage}}</p>
+            }
+            <button type="submit" class="border-0 btn-special py-3 w-100 rounded-1 mt-2 fs-6 fw-normal  text-white"
+                [disabled]="editProfileForm.invalid || isLoading">
+                Save
+                @if (isLoading) {
+                <i class="fa-spin fa-spinner fa ms-2"> </i>
+                }
+
+            </button>
+        </form>
+    </div>
+</section>

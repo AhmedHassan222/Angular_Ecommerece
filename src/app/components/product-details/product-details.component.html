@@ -1,0 +1,88 @@
+<section class="section py-1">
+    <div class="container-fluid">
+        @if (placeholderLoading) {
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row g-1 flex-nowrap flex-md-wrap overflow-x-auto">
+                    @for (image of [1,2]; track $index) {
+                    <div class="col-6">
+                        <img src="../../../assets/loadingImage.jfif" alt="loading Image" class="w-100">
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4  py-sm-4 fit-hight-content">
+                <div class="card-body">
+                    @for (item of [1,2,3,4]; track $index) {
+                    <p class="card-text placeholder-glow">
+                        <span class="placeholder col-7"></span>
+                        <span class="placeholder col-4"></span>
+                        <span class="placeholder col-4"></span>
+                    </p>
+                    }
+                </div>
+            </div>
+        </div>
+        }
+        @else{
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row g-1 flex-nowrap flex-md-wrap overflow-x-auto">
+                    @for (image of product.images; track $index) {
+                    <div class="col-6">
+                        <img [src]="image" alt="" class="w-100">
+                    </div>
+                    }
+                </div>
+            </div>
+            <div class="col-md-4  py-sm-4 fit-hight-content">
+                <h3 class="h5">{{product.title}}</h3>
+                <p class="fw-bold">EGP {{product.price }}</p>
+                <div class="d-flex ">
+                    <app-star-rating [rating]="product.ratingsAverage"></app-star-rating>
+                    <p class="fw-medium ms-2">{{product.ratingsQuantity}} rate</p>
+                </div>
+                <button (click)="addToCart(product.id)"
+                    class="w-100 btn-special text-white rounded-0 my-3 fs-6 py-2 border-0">ADD TO BAG</button>
+                <button (click)="addToCart(product.id)"
+                    class="w-100 btn-outline-special text-black border border-black border-1 rounded-0 fs-6 py-2">ADD TO
+                    FAVARITES</button>
+                <p class="fw-normal my-4">{{product.description}}</p>
+                <div class="d-flex">
+                    <p class="bg-light p-2 rounded-1 mx-1 text-gray">{{product.category.name}}</p>
+                    <p class="bg-light p-2 rounded-1 mx-1 text-gray">{{product.brand.name}}</p>
+                </div>
+                <div class="d-flex fs-small align-items-center">
+                    <i class="fa-solid fa-wallet me-3 fs-5"></i>
+                    <div class="my-2">
+                        <p class="text-black my-0">Cash on Delivery</p>
+                        <p class="text-muted my-0">Pay when you recieve your order</p>
+                    </div>
+                </div>
+                <div class="d-flex fs-small align-items-center">
+                    <i class="fa-solid fa-rotate-right me-3 fs-5"></i>
+                    <div class="my-2">
+                        <p class="text-black my-0">Free returns
+                        </p>
+                        <p class="text-muted my-0">Return your product within 14 days for free
+                        </p>
+                    </div>
+                </div>
+                <div class="d-flex fs-small align-items-center">
+                    <i class="fa-regular fa-credit-card me-3 fs-5"></i>
+                    <div class="my-2">
+                        <p class="text-black my-0">Payment options
+                        </p>
+                        <p class="text-muted my-0">Pay with cards or digital wallets</p>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        }
+    </div>
+    <app-related-product  [category]="product.category.name" [brand]="product.brand.name" />
+</section>
+
+<app-action-loading [loading]="isLoading"/>

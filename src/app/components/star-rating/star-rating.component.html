@@ -1,0 +1,10 @@
+<div class="stars">
+    @for (star of stars; track $index) {
+    <div class="star" [ngClass]="{
+        'full': star === 'full',
+        'empty': star === 'empty'
+      }"
+        [ngStyle]="star.includes('%') ? {'background': 'linear-gradient(to right, #f4b400 ' + star + ', #ccc ' + star + ')'} : null">
+    </div>
+    }
+</div>

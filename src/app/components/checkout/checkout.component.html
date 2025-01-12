@@ -1,0 +1,55 @@
+<section class="section py-4">
+    <div class="w-custom mx-auto">
+        <h3 class="fs-5 fw-semibold">Checkout </h3>
+        <form class="mb-2" (ngSubmit)="sendData()" [formGroup]="orderForm">
+            <div class="form-floating my-3">
+                <textarea  id="details" type="text"
+                    class="form-control rounded-0 border-gray px-3 w-100  border border-1" placeholder="details"
+                    formControlName="Details"></textarea>
+                <label for="details">Details</label>
+            </div>
+            <div id="phone" class="form-floating my-3">
+                <input type="tel" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+                    placeholder="Phone" formControlName="phone" />
+                <label for="phone">Phone</label>
+
+                @if ((orderForm.get('phone')?.touched || orderForm.get('phone')?.dirty) &&
+                orderForm.get('phone')?.errors) {
+                @if (orderForm.get('phone')?.getError('required')) {
+                <p class="text-danger  small pt-1">Phone is required</p>
+                }
+                @if (orderForm.get('phone')?.getError('pattern')) {
+                <p class="text-danger  small pt-1">Access egyption phone only.</p>
+                }
+                }
+            </div>
+            <div id="city" class="form-floating my-3">
+                <input type="text" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+                    placeholder="City" formControlName="city" />
+                <label for="city">City</label>
+
+                @if ((orderForm.get('city')?.touched || orderForm.get('city')?.dirty) &&
+                orderForm.get('city')?.errors) {
+                @if (orderForm.get('city')?.getError('required')) {
+                <p class="text-danger  small pt-1">city is required</p>
+                }
+                }
+            </div>
+
+            @if (errorMessage) {
+            <p class="fs-6 text-danger">{{errorMessage}}</p>
+            }
+            @if (errorMessage) {
+            <p class="fs-6 text-danger">{{errorMessage}}</p>
+            }
+            <button type="submit" class="border-0 btn-special py-3 w-100 rounded-1 my-3 fs-6 fw-normal  text-white"
+                [disabled]="orderForm.invalid || isLoading">
+                Checkout
+                @if (isLoading) {
+                <i class="fa-spin fa-spinner fa ms-2"> </i>
+                }
+
+            </button>
+        </form>
+    </div>
+</section>
