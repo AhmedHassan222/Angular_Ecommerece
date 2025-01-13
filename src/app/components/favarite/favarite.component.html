@@ -1,10 +1,10 @@
-<section class="section">
+<section class="section py-3">
     <div class="container-fluid">
         <div class="my-3">
             <h3 class="h5 fw-medium">Wishlist ({{prodcuts.length}} items)</h3>
         </div>
         @if(placholderLoading){
-        <app-placholder-loading />
+        <app-placholder-loading [classInput]="'col-6 col-sm-6 col-md-3 col-lg-2'" [numberBoxes]="12" />
         }
         @else {
         <div class="row g-3">

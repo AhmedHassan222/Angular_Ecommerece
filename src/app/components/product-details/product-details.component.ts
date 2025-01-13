@@ -47,34 +47,22 @@ export class ProductDetailsComponent implements OnInit {
         })
       }
     })
-    
+
 
   }
   addToCart(id: string): void {
     this.isLoading = true;
-    this._CartService.addToCart(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this._ToastrService.success('The product is added to cart');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this._ToastrService.error(err?.error?.message);
-      }
-    })
-
+    this._CartService.addToCart(id);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
+  
   addToFavarite(id: string): void {
     this.isLoading = true;
-    this._FavariteService.addToFavarite(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this._ToastrService.success('The product is added to wishlist');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this._ToastrService.error(err?.error?.message);
-      }
-    })
+    this._FavariteService.addToFavarite(id);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 }

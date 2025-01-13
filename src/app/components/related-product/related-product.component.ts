@@ -11,7 +11,7 @@ import { RouterLink } from '@angular/router';
 @Component({
   selector: 'app-related-product',
   standalone: true,
-  imports: [ PlacholderLoadingComponent, ActionLoadingComponent , RouterLink],
+  imports: [PlacholderLoadingComponent, ActionLoadingComponent, RouterLink],
   templateUrl: './related-product.component.html',
   styleUrl: './related-product.component.scss'
 })
@@ -24,8 +24,8 @@ export class RelatedProductComponent implements OnInit {
 
   products: IProduct[] = [];
   relatedProducts: IProduct[] = [];
-  isLoading:boolean = false;
-  placholderLoading:boolean = true;
+  isLoading: boolean = false;
+  placholderLoading: boolean = true;
   @Input() category!: string;
   @Input() brand!: string;
   getRelatedProducts(categoryName: string, brandName: string): void {
@@ -37,7 +37,7 @@ export class RelatedProductComponent implements OnInit {
         this.products = res?.data;
         this.relatedProducts = this.products.filter(p => p.category.name === categoryName && p.brand.name === brandName);
       },
-      error: (err) => { 
+      error: (err) => {
         this._ToastrService.error(err?.error?.message);
       }
     })
@@ -50,30 +50,19 @@ export class RelatedProductComponent implements OnInit {
 
   addToCart(id: string): void {
     this.isLoading = true;
-    this._CartService.addToCart(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this._ToastrService.success('The product is added to cart');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this._ToastrService.error(err?.error?.message);
-      }
-    })
-
+    this._CartService.addToCart(id);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
+
+
   addToFavarite(id: string): void {
     this.isLoading = true;
-    this._FavariteService.addToFavarite(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this._ToastrService.success('The product is added to wishlist');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this._ToastrService.error(err?.error?.message);
-      }
-    })
+    this._FavariteService.addToFavarite(id);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 
 }

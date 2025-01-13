@@ -54,22 +54,21 @@ export class FavariteComponent implements OnInit, OnDestroy {
 
   addToCart(id: string): void {
     this.isLoading = true;
-    this._CartService.addToCart(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this._ToastrService.success('The product is added to cart');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this._ToastrService.error(err?.error?.message);
-      }
-    })
-
+    this._CartService.addToCart(id);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
+
+
+
   removeFromFavarite(id: string) {
     this.isLoading = true;
     this._FavariteService.deleteProductFromFavarite(id).subscribe({
-      next: () => {
+      next: (res) => {
+        //start here 
+        this._FavariteService.updatefavariteCount(res?.data?.length);
+        // end here       
         this.isLoading = false;
         this._ToastrService.error('The product is removed from wishlist');
         this.getAllProductsFavarite();

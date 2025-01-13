@@ -21,13 +21,13 @@ import { MetaDataProduct } from '../../core/Interfaces/meta-data-product';
   styleUrl: './products.component.scss'
 })
 export class ProductsComponent implements OnInit, OnDestroy {
+  // Dependancy Injection
   _ProductService = inject(ProductService);
   _CartService = inject(CartService);
   _FavariteService = inject(FavariteService);
   _ToastrService = inject(ToastrService);
 
-
-
+  // properties
   prodcuts: IProduct[] = [];
   searchword: string = '';
   arrayOfProductsIds: string[] = [];
@@ -39,9 +39,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
   numberOfPages: number = 1;
 
   // functons >>
-  onPageChange(page: number): void {
-    this.getAllProducts(page)
-  }
   getAllProducts(pageNumber: number = 1) {
     this.getAllProductSubscribe = this._ProductService.getAllProduct(pageNumber).subscribe({
       next: (res) => {
@@ -61,38 +58,37 @@ export class ProductsComponent implements OnInit, OnDestroy {
       }
     })
   }
+
+
   ngOnInit(): void {
     this.getAllProducts(this.page);
   }
-  ngOnDestroy(): void {
-    this.getAllProductSubscribe?.unsubscribe();
+
+  
+  onPageChange(page: number): void {
+    this.getAllProducts(page)
   }
+
 
   addToCart(id: string): void {
     this.isLoading = true;
-    this._CartService.addToCart(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this._ToastrService.success('The product is added to cart');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this._ToastrService.error(err?.error?.message);
-      }
-    })
-
+    this._CartService.addToCart(id);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
+
+
   addToFavarite(id: string): void {
     this.isLoading = true;
-    this._FavariteService.addToFavarite(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this._ToastrService.success('The product is added to wishlist');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this._ToastrService.error(err?.error?.message);
-      }
-    })
+    this._FavariteService.addToFavarite(id);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
+  }
+
+
+  ngOnDestroy(): void {
+    this.getAllProductSubscribe?.unsubscribe();
   }
 }

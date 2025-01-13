@@ -8,14 +8,11 @@ import { environment } from '../environments/environment';
 })
 export class ProductService {
   _HttpClient = inject(HttpClient);
-  getAllProduct(pageNumber:number = 1): Observable<any> {
+  getAllProduct(pageNumber: number = 1): Observable<any> {
     return this._HttpClient.get(`${environment.baseUrl}/api/v1/products?page=${pageNumber}`);
   }
   getProductDetails(id: (string | null)): Observable<any> {
     return this._HttpClient.get(`${environment.baseUrl}/api/v1/products/${id}`);
-  }
-  getProductsRelated():Observable<any>{
-    return this._HttpClient.get(`${environment.baseUrl}/api/v1/products`); 
   }
 
 }

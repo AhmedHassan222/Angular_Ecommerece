@@ -4,6 +4,10 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartService } from '../../core/service/cart.service';
 import { FavariteService } from '../../core/service/favarite.service';
 
+
+
+
+
 @Component({
   selector: 'app-main-navbar',
   standalone: true,
@@ -16,29 +20,38 @@ export class MainNavbarComponent implements OnInit {
   _CartService = inject(CartService)
   _FavariteService = inject(FavariteService)
   menu: boolean = false;
-  itemsInCart: number = 0;
-  itemsInFavarite: number = 0;
   openMenu(): void {
     this.menu = !this.menu;
   }
-  signOut(): void {
-    this._AuthService.logOut();
-  }
+
+  cartCount: number = 0;
+  favariteCount: number = 0;
+
+
   ngOnInit(): void {
+    this.getCountFavAndCart();
+    this._CartService.cartCount$.subscribe((count) => {
+      this.cartCount = count;
+    });
+    this._FavariteService.favariteCount$.subscribe((count) => {
+      this.favariteCount = count;
+    });
+  }
+  getCountFavAndCart() {
     this._CartService.getAllPrductsCart().subscribe({
       next: (res) => {
-        this.itemsInCart = res.data.products.length;
+        this.cartCount = res.data.products.length;
       },
       error: () => {
-        this.itemsInCart = 0;
+        this.cartCount = 0;
       }
     })
     this._FavariteService.getAllPrductsFavarites().subscribe({
       next: (res) => {
-        this.itemsInFavarite = res.data.length;
+        this.favariteCount = res.data.length;
       },
       error: () => {
-        this.itemsInFavarite = 0;
+        this.favariteCount = 0;
       }
     })
   }

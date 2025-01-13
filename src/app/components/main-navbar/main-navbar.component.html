@@ -1,41 +1,25 @@
-<nav class="container-fluid py-3 ">
-  <div class="d-flex  align-items-center justify-content-between">
-
-    <ul class="mb-2 mb-lg-0 d-none d-lg-flex  list-unstyled   flex-column flex-lg-row ">
-      <li class="nav-item">
-        <a class="nav-link mx-3 text-black fw-medium" aria-current="page"
-          routerLinkActive=" border-bottom border-1 border-black" routerLink="/products">Products</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-black fw-medium" aria-current="page"
-        routerLinkActive=" border-bottom border-1 border-black" routerLink="/profile">Profile</a>
-      </li>
-    </ul>
-    <div>
-      <a class="navbar-brand fw-medium me-3 fs-4" routerLink="/"> E-commerce</a>
-      <span> <i (click)="openMenu()" class="fa-solid d-inline d-lg-none fa-bars-staggered fs-5"></i>
-      </span>
+<nav class="navbar navbar-expand-lg border-bottom  py-3">
+  <div class="container-fluid">
+    <a class="navbar-brand fs-4 fw-semibold" routerLink="/products">E-commerce</a>
+    <button class="bg-transparent border-0 text-black d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link fw-normal text-black fw-medium" aria-current="page" routerLink="/products">products</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-normal text-black fw-medium " aria-current="page" routerLink="/profile">Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-normal text-black fw-medium " aria-current="page" routerLink="/favarite">favorites({{favariteCount}})</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-normal text-black fw-medium " aria-current="page" routerLink="/cart">Bag({{cartCount}})</a>
+        </li>
+      </ul>
     </div>
-    <div class=" d-flex  align-items-center ">
-      <a class="nav-link mx-3 text-black fw-medium" aria-current="page"
-        routerLinkActive=" border-bottom border-1 border-black" routerLink="/favarite">favorites
-        ({{itemsInFavarite}})</a>
-      <a class="nav-link text-black fw-medium" aria-current="page"
-        routerLinkActive=" border-bottom border-1 border-black" routerLink="/cart">Bag ({{itemsInCart}})</a>
-    </div>
-
   </div>
 </nav>
-@if (menu) {
-<ul class="mb-2 mb-lg-0 d-lg-none d-flex  py-2   list-unstyled   flex-column flex-lg-row ">
-  <li class="nav-item py-3">
-    <a class="nav-link mx-3 text-black fw-medium" aria-current="page"
-      routerLinkActive=" border-bottom border-1 border-black" routerLink="/products">Products</a>
-  </li>
-  <li class="nav-item py-3">
-    <a class="nav-link mx-3 text-black fw-medium" aria-current="page"
-      routerLinkActive=" border-bottom border-1 border-black" routerLink="/profile">Profile</a>
-  </li>
-
-</ul>
-}

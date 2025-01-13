@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-placholder-loading',
@@ -7,6 +7,13 @@ import { Component } from '@angular/core';
   templateUrl: './placholder-loading.component.html',
   styleUrl: './placholder-loading.component.scss'
 })
-export class PlacholderLoadingComponent {
-
+export class PlacholderLoadingComponent implements OnInit {
+  @Input() classInput: string = "col-6 col-sm-6 col-md-4 col-lg-3"
+  @Input() numberBoxes: number = 4;
+  arrLoading:number[] = [];
+  ngOnInit(): void {
+    for (let i = 0; i < this.numberBoxes; i++) {
+      this.arrLoading.push(i)
+    }
+  }
 }

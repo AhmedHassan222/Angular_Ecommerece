@@ -5,13 +5,13 @@
             <div class="col-md-8">
                 <div class="row g-1 flex-nowrap flex-md-wrap overflow-x-auto">
                     @for (image of [1,2]; track $index) {
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <img src="../../../assets/loadingImage.jfif" alt="loading Image" class="w-100">
                     </div>
                     }
                 </div>
             </div>
-            <div class="col-md-4  py-sm-4 fit-hight-content">
+            <div class="col-md-4  py-4 fit-hight-content">
                 <div class="card-body">
                     @for (item of [1,2,3,4]; track $index) {
                     <p class="card-text placeholder-glow">
@@ -29,13 +29,13 @@
             <div class="col-md-8">
                 <div class="row g-1 flex-nowrap flex-md-wrap overflow-x-auto">
                     @for (image of product.images; track $index) {
-                    <div class="col-6">
+                    <div class="col-12 col-md-6">
                         <img [src]="image" alt="" class="w-100">
                     </div>
                     }
                 </div>
             </div>
-            <div class="col-md-4  py-sm-4 fit-hight-content">
+            <div class="col-md-4  py-4  fit-hight-content">
                 <h3 class="h5">{{product.title}}</h3>
                 <p class="fw-bold">EGP {{product.price }}</p>
                 <div class="d-flex ">

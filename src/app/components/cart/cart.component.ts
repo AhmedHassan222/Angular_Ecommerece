@@ -64,6 +64,9 @@ export class CartComponent implements OnInit {
     this.isLoading = true;
     this._CartService.deleteProductFromCart(id).subscribe({
       next: (res) => {
+        //start here 
+        this._CartService.updateCartCount(res?.numOfCartItems);
+        // end here
         this.isLoading = false;
         this.productsInCart = res.data;
         this._ToastrService.error('The product is removed from cart');
@@ -79,6 +82,9 @@ export class CartComponent implements OnInit {
     this.isLoading = true;
     this._CartService.ClearAllProductsFromCart().subscribe({
       next: () => {
+        //start here 
+        this._CartService.updateCartCount(0);
+        // end here
         this.isLoading = false;
         this.productsInCart.products = [];
         this.productsInCart.totalCartPrice = 0;
@@ -93,15 +99,9 @@ export class CartComponent implements OnInit {
   }
   addToFavarite(id: string): void {
     this.isLoading = true;
-    this._FavariteService.addToFavarite(id).subscribe({
-      next: () => {
-        this.isLoading = false;
-        this._ToastrService.success('The product is added to wishlist');
-      },
-      error: (err) => {
-        this.isLoading = false;
-        this._ToastrService.error(err?.error?.message);
-      }
-    })
+    this._FavariteService.addToFavarite(id);
+    setTimeout(() => {
+      this.isLoading = false;
+    }, 2000);
   }
 }

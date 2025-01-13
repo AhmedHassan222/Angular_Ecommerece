@@ -1,8 +1,8 @@
-<section class="section">
+<section class="section py-3">
     <div class="container-fluid">
         <div class="my-3">
-            <h3 class="h5 fw-normal">Products</h3>
-            <div class="row">
+            <h3 class="h5 fw-medium">Products</h3>
+            <div class="row my-4">
                 <div class="col-sm-12 col-md-7 col-lg-3">
                     <div class="input-group ">
                         <span class="input-group-text p-2" id="basic-addon1"><i
@@ -14,7 +14,7 @@
             </div>
         </div>
         @if(placholderLoading){
-        <app-placholder-loading />
+        <app-placholder-loading [numberBoxes]="8" />
         }
         @else {
         <div class="row g-3">
@@ -51,13 +51,16 @@
             }
             <!-- Pagination    -->
             <div class="my-4 text-cetner  d-flex justify-content-center p-2">
-                <span (click)="onPageChange(page - 1)" [ngClass]=" page <= 1 ? 'bg-disapled ': 'bg-enable' "
+                @if(page > 1){
+                <span (click)="onPageChange(page - 1)"
                     class="py-2 px-3 text-center border border-1 border-black ">Prev</span>
-                <span *ngFor="let num of [].constructor(numberOfPages); let i = index" (click)="onPageChange(i + 1)"
-                    [ngClass]="(i + 1) > numberOfPages || (i+1) < 1 || (i+1) == page ? 'bg-disapled ': 'bg-enable' "
-                    class="py-2 px-3 text-center border border-1 border-black ">{{i + 1}}</span>
-                <span (click)="onPageChange(page + 1)" [ngClass]="page >= numberOfPages ? 'bg-disapled ': 'bg-enable' "
+                }
+                <span
+                    class="py-2 px-3 text-center border border-1 border-black fw-medium">{{page}}/{{numberOfPages}}</span>
+                @if(page < numberOfPages){
+                <span (click)="onPageChange(page + 1)"
                     class="py-2 px-3 text-center border border-1 border-black ">Next</span>
+                }
             </div>
 
 
