@@ -98,11 +98,5 @@ export class CartComponent implements OnInit {
       }
     })
   }
-  addToFavarite(id: string): void {
-    this.isLoading = true;
-    this._FavariteService.addToFavarite(id);
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 2000);
-  }
+
 }
