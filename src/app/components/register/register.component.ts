@@ -36,7 +36,7 @@ export class RegisterComponent {
           {
             localStorage.setItem('token',res.token)
             this._AuthService.saveUserData();
-            this._Router.navigate(['/'])
+            this._Router.navigate(['/products'])
             // store toke
           }
         },
