@@ -7,11 +7,12 @@ import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { PlacholderLoadingComponent } from '../placholder-loading/placholder-loading.component';
 import { ActionLoadingComponent } from "../action-loading/action-loading.component";
+import { CartLoadingComponent } from "../cart-loading/cart-loading.component";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [CurrencyPipe, RouterLink, PlacholderLoadingComponent, ActionLoadingComponent],
+  imports: [CurrencyPipe, RouterLink, PlacholderLoadingComponent, ActionLoadingComponent, CartLoadingComponent],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
