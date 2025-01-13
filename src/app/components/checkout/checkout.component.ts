@@ -2,6 +2,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderService } from '../../core/service/order.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-checkout',
@@ -21,6 +22,7 @@ export class CheckoutComponent implements OnInit {
     phone: new FormControl(null, [Validators.required, Validators.pattern('^01[0125][0-9]{8}$')]),
     city: new FormControl(null, [Validators.required])
   })
+   _ToastrService = inject(ToastrService);
   ngOnInit(): void {
     this._ActivatedRoute.paramMap.subscribe({
       next: (params) => {
@@ -37,11 +39,11 @@ export class CheckoutComponent implements OnInit {
         {
           window.open(res.session.url , "_self")
         }
-        console.log(res)
       },
       error:(err)=>{
         this.isLoading = false;
-        console.log(err)
+        this._ToastrService.error(err?.error?.message);
+
       }
     })
   }

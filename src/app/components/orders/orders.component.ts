@@ -4,6 +4,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { User } from '../../core/Interfaces/user';
 import { CurrencyPipe, DatePipe } from '@angular/common';
 import { Order } from '../../core/Interfaces/order';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-orders',
@@ -14,17 +15,16 @@ import { Order } from '../../core/Interfaces/order';
 })
 export class OrdersComponent implements OnInit {
   _OrderService = inject(OrderService)
+  _ToastrService = inject(ToastrService)
   orders:Order[] = [];
   ngOnInit(): void {
     let user:User = jwtDecode(localStorage.getItem('token') as string);
     this._OrderService.getAllOrders(user.id).subscribe({
       next:(res)=>{
         this.orders = res;
-        console.log(this.orders)
-
       },
       error:(err)=>{
-        console.log(err)
+        this._ToastrService.error(err?.error?.message);
       }
     })
   }
