@@ -30,5 +30,7 @@ export class ProfileComponent implements OnInit {
   {
     this._AuthService.logOut();
     this._Router.navigate(['/login'])
+    this._AuthService.saveUserData();
+    this._AuthService.userData.next(null);
   }
 }

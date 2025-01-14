@@ -1,19 +1,19 @@
 
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [RouterLink, ReactiveFormsModule],
+  imports: [ ReactiveFormsModule],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
 })
 export class ChangePasswordComponent {
-  errorMessage:string = "";
   isLoading:boolean = false;
   changePassword: FormGroup = new FormGroup({
     currentPassword: new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z0-9]{6,}')]),
@@ -22,6 +22,7 @@ export class ChangePasswordComponent {
   } , this.confirmPassword);
 
   _authService:AuthService= inject(AuthService);
+  _ToastrService= inject(ToastrService);
   _Router= inject(Router);
   sendData():void 
   {
@@ -32,12 +33,15 @@ export class ChangePasswordComponent {
          if(res?.message === "success")
           {
             this._authService.logOut();
+            this._authService.saveUserData();
             this._Router.navigate(['/auth/login']);
+            this._ToastrService.success('Password has been changed')
           }
       },
       error:(err:HttpErrorResponse)=>{
         this.isLoading = false;
-        this.errorMessage = err?.error?.message;
+        this._ToastrService.error(err?.error?.message)
+
       }
     })
   }

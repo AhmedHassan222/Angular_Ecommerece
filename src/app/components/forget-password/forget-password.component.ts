@@ -82,6 +82,7 @@ export class ForgetPasswordComponent {
         localStorage.setItem('token',res?.token)
         this.status = 'verifyEmail';
         this._AuthSErvice.saveUserData();
+        this._AuthSErvice.saveUserData();
         this._Router.navigate(['/'])
 
       },

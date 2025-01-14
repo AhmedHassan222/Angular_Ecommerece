@@ -3,6 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,18 @@ export class LoginComponent {
   });
 
   _authService:AuthService= inject(AuthService);
+  _ToastrService= inject(ToastrService);
   _Router= inject(Router);
+  hidden:boolean= true;
+
+
+
+  // functions 
+  toggleAttribute():void {
+    this.hidden = !this.hidden;
+  }
+
+
   sendData():void 
   {
     this.isLoading = true;
@@ -34,6 +46,7 @@ export class LoginComponent {
             localStorage.setItem('token',res.token)
             this._authService.saveUserData();
             this._Router.navigate(['/products']);
+            this._ToastrService.success(`Welcome Back ${res?.user?.name}`);
           }
       },
       error:(err:HttpErrorResponse)=>{

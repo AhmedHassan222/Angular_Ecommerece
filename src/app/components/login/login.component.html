@@ -18,10 +18,18 @@
         }
       </div>
       <div class="form-floating my-3">
-        <input id="password" type="password" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+        <input id="password" [type]="hidden? 'password':'text'" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
           placeholder="Password" formControlName="password" />
         <label for="password">Password</label>
-
+        <div class="d-flex justify-content-end py-2">
+          <span class=" fs-small fw-medium text-muted " (click)="toggleAttribute()">
+            @if (hidden) {
+            show password
+            }@else {
+            hidden password
+            }
+          </span>
+        </div>
         @if ((loginForm.get('password')?.touched || loginForm.get('password')?.dirty) &&
         loginForm.get('password')?.errors) {
         @if (loginForm.get('password')?.getError('required')) {

@@ -3,6 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validator
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -13,8 +14,11 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class RegisterComponent {
   isLoading:boolean = false;
+  hidden:boolean= true;
+
   private readonly _AuthService = inject(AuthService)
   private readonly _Router = inject(Router)
+  private readonly _ToastrService = inject(ToastrService)
   errorMessage:string = '';
   registerForm:FormGroup = new FormGroup({
     name : new FormControl(null, [Validators.required]),
@@ -23,6 +27,12 @@ export class RegisterComponent {
     rePassword : new FormControl(null),
     phone : new FormControl(null, [Validators.required, Validators.pattern('^01[0125][0-9]{8}$')] )
   }, this.confirmPassword);
+
+
+  // functions 
+  toggleAttribute():void {
+    this.hidden = !this.hidden;
+  }
 
   sendData():void 
   {
@@ -37,6 +47,7 @@ export class RegisterComponent {
             localStorage.setItem('token',res.token)
             this._AuthService.saveUserData();
             this._Router.navigate(['/products'])
+            this._ToastrService.success(`Welcome ${res?.user?.name}`);
             // store toke
           }
         },

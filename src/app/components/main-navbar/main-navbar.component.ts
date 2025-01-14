@@ -23,12 +23,21 @@ export class MainNavbarComponent implements OnInit {
   openMenu(): void {
     this.menu = !this.menu;
   }
-
+  isLogin:boolean = false;
   cartCount: number = 0;
   favariteCount: number = 0;
 
 
+   private setupUserDataListener(): void {
+    this._AuthService.userData.subscribe({
+      next: (userData) => {
+        this.isLogin = !!userData;
+      },
+    });
+  }
+
   ngOnInit(): void {
+    this.setupUserDataListener();
     this.getCountFavAndCart();
     this._CartService.cartCount$.subscribe((count) => {
       this.cartCount = count;

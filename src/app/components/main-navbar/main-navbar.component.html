@@ -1,24 +1,37 @@
 <nav class="navbar navbar-expand-lg border-bottom  py-3">
   <div class="container-fluid">
-    <a class="navbar-brand fs-4 fw-semibold" routerLink="/products">E-commerce</a>
-    <button class="bg-transparent border-0 text-black d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <a class="navbar-brand fs-4 fw-semibold" routerLink="/">E-commerce</a>
+    <button class="bg-transparent border-0 text-black d-lg-none" type="button" data-bs-toggle="collapse"
+      data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+      aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link fw-normal text-black fw-medium" aria-current="page" routerLink="/products">products</a>
+          <a class="nav-link text-black fw-medium" aria-current="page" routerLinkActive="border-bottom border-black" routerLink="/products">Products</a>
+        </li>
+        @if(isLogin){
+        <li class="nav-item">
+          <a class="nav-link text-black fw-medium " aria-current="page" routerLinkActive="border-bottom border-black" routerLink="/profile">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fw-normal text-black fw-medium " aria-current="page" routerLink="/profile">Profile</a>
+          <a class="nav-link text-black fw-medium " aria-current="page"
+            routerLinkActive="border-bottom border-black" routerLink="/favarite">favorites({{favariteCount}})</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fw-normal text-black fw-medium " aria-current="page" routerLink="/favarite">favorites({{favariteCount}})</a>
+          <a class="nav-link text-black fw-medium " aria-current="page"
+            routerLinkActive="border-bottom border-black" routerLink="/cart">Bag({{cartCount}})</a>
+        </li>
+        }
+        @else {
+        <li class="nav-item">
+          <a class="nav-link text-black fw-medium" aria-current="page" routerLinkActive="border-bottom border-black" routerLink="/register">Create Account</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link fw-normal text-black fw-medium " aria-current="page" routerLink="/cart">Bag({{cartCount}})</a>
+          <a class="nav-link text-black fw-medium " aria-current="page" routerLinkActive="border-bottom border-black" routerLink="/login">Log In</a>
         </li>
+        }
       </ul>
     </div>
   </div>
