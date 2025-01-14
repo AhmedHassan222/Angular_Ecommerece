@@ -7,11 +7,12 @@ import { FavariteService } from '../../core/service/favarite.service';
 import { PlacholderLoadingComponent } from '../placholder-loading/placholder-loading.component';
 import { ActionLoadingComponent } from "../action-loading/action-loading.component";
 import { RouterLink } from '@angular/router';
+import { ProductGridComponent } from "../product-grid/product-grid.component";
 
 @Component({
   selector: 'app-related-product',
   standalone: true,
-  imports: [PlacholderLoadingComponent, ActionLoadingComponent, RouterLink],
+  imports: [PlacholderLoadingComponent, ActionLoadingComponent, RouterLink, ProductGridComponent],
   templateUrl: './related-product.component.html',
   styleUrl: './related-product.component.scss'
 })

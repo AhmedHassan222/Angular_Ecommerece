@@ -1,5 +1,5 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter, withHashLocation, withInMemoryScrolling, withViewTransitions } from '@angular/router';
+import { provideRouter, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -12,8 +12,7 @@ export const appConfig: ApplicationConfig = {
     timeOut: 3000,
     positionClass: 'toast-top-right',
     preventDuplicates: true,
-  }), provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: "top" }),
-    withHashLocation()),
+  }), provideRouter(routes, withInMemoryScrolling({ scrollPositionRestoration: "top" })),
   provideClientHydration(),
   provideHttpClient(withFetch())]
 };

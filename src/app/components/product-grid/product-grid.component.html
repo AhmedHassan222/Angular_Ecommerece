@@ -1,0 +1,40 @@
+<div class=" product position-relative">
+    <div [style]="styleImage">
+        <img [routerLink]="['/products', product.id]" [src]="inFavarite?product.imageCover :product.images[0]" class="w-100 pointer" [alt]="product.title">
+    </div>
+    <span class="position-absolute py-1 px-2 rounded-circle end-0 top-0 m-4 fs-5 bg-light">
+        @if(!isLoadingFavarite){
+            @if(inFavarite){
+                <i (click)="removeFromFavarite(product.id)" class="fa-solid fa-heart text-danger"></i>
+            }
+            @else{
+                <i (click)="addToFavarite(product.id)" class="fa-regular fa-heart text-danger"></i>
+            }
+        }
+        @else {
+        <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        }
+    </span>
+    <div class="p-3">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h3 [routerLink]="['/products', product.id]" class="h6 my-0 pointer">{{product.title.split('
+                    ',2).join(' ')}}</h3>
+                <p class="fw-bold my-0"> {{product.price | currency : 'EGP'}}</p>
+            </div>
+
+            <span class="shopping-cart px-3 py-2 rounded-circle ">
+                @if(!isLoadingCart){
+                <i (click)="addToCart(product.id)" class="fa-solid fa-shopping-bag"></i>
+                }
+                @else {
+                <div class="spinner-border spinner-border-sm" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                }
+            </span>
+        </div>
+    </div>
+</div>

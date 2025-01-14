@@ -9,7 +9,7 @@ import { NotfoundComponent } from './components/notfound/notfound.component';
 import { ProductsComponent } from './components/products/products.component';
 import { ProductDetailsComponent } from './components/product-details/product-details.component';
 import { FavariteComponent } from './components/favarite/favarite.component';
-import { authGuard } from './core/auth.guard';
+import { authGuard } from './core/guards/auth.guard';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ForgetPasswordComponent } from './components/forget-password/forget-password.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';

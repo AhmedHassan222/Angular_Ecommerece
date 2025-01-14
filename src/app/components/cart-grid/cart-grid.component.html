@@ -1,0 +1,29 @@
+<div class="d-flex justify-content-around  align-items-center my-1 ">
+    <img [src]="productInCart.product.imageCover" style="width: 40px" [alt]="productInCart.product.title">
+    <p class="fs-small fw-medium">{{productInCart.product.title.split(' ',2).join(' ')}}</p>
+    <p class="fw-medium fs-small">EGP {{productInCart.price}}</p>
+    <div class="d-flex">
+        <button (click)="updateQuantity(productInCart.product.id,productInCart.count + 1)"
+            class="p-1 bg-light fw-bold border-0 fs-small"><i class="fa-solid fs-small fa-plus"></i></button>
+        <div readonly disabled class="text-center fs-small px-3 align-self-center fw-medium text-center" type="text">
+            @if(isLoadingUpdateCount){
+            <div class="spinner-border spinner-border-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            }@else {
+            {{productInCart.count}}
+            }
+        </div>
+        <button (click)="updateQuantity(productInCart.product.id,--productInCart.count - 1)"
+            class="p-1 bg-light fw-bold border-0 fs-small"><i class="fa-solid fs-small fa-minus"></i></button>
+    </div>
+    <span class="text-danger bg-light px-2">
+        @if(!isLoadingCart){
+        <i (click)="removeProductFromCart(productInCart.product.id)" class="fa-solid fa-trash"></i>
+        }@else {
+        <div class="spinner-border spinner-border-sm" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div> }
+    </span>
+
+</div>

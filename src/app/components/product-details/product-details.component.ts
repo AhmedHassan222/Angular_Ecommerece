@@ -27,23 +27,25 @@ export class ProductDetailsComponent implements OnInit {
 
   id: string | null = ''
   product!: IProduct;
-  isLoading: boolean = false;
+  isLoadingFavarite: boolean = false;
+  isLoadingCart: boolean = false;
   placeholderLoading = true;
   // get product details
-
   ngOnInit(): void {
     this._ActivatedRoute.paramMap.subscribe({
       next: (p) => {
         this._ProductService.getProductDetails(p.get('id')).subscribe({
           next: (res) => {
             this.product = res?.data;
-            setTimeout(() => {
-              this.placeholderLoading = false;
-            }, 2000);
           },
           error: (err) => {
             this._ToastrService.error(err?.error?.message);
           },
+          complete:()=>{
+            setTimeout(() => {
+              this.placeholderLoading = false;
+            }, 1000);
+          }
         })
       }
     })
@@ -51,18 +53,18 @@ export class ProductDetailsComponent implements OnInit {
 
   }
   addToCart(id: string): void {
-    this.isLoading = true;
+    this.isLoadingCart = true;
     this._CartService.addToCart(id);
     setTimeout(() => {
-      this.isLoading = false;
+      this.isLoadingCart = false;
     }, 2000);
   }
-  
+
   addToFavarite(id: string): void {
-    this.isLoading = true;
+    this.isLoadingFavarite = true;
     this._FavariteService.addToFavarite(id);
     setTimeout(() => {
-      this.isLoading = false;
+      this.isLoadingFavarite = false;
     }, 2000);
   }
 }

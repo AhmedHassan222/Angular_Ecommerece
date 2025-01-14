@@ -1,47 +1,38 @@
 <section class="section py-3">
     <div class="container-fluid">
         @if (placeholerLoading) {
-            <app-cart-loading/>
+        <app-cart-loading />
         }
         @else {
         <div class="row">
-            <div class="col-sm-12 col-md-7 col-lg-7  mx-auto">
+            <div class=" col-md-7   mx-auto ">
+                @if(productsInCart.products.length > 0){
                 <div class="d-flex justify-content-between py-3">
                     <p class="text-muted fw-medium">Total items: {{productsInCart.products.length}} items</p>
-                    @if(productsInCart.products.length > 0){
-                    <button (click)="clearAll()" class="bg-light text-danger border-0 px-3">Clear All</button>
-                    }
+                    <button (click)="clearAll()" class="bg-light text-danger border-0 px-3">
+                        Clear All
+                        @if(isLoadingClearAll){
+                        <div class="spinner-border spinner-border-sm" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        }
+                    </button>
                 </div>
+                }
                 @for (productInCart of productsInCart.products; track $index) {
-                <div class="d-flex justify-content-around  align-items-center my-1 ">
-                    <img [src]="productInCart.product.imageCover" style="width: 40px"
-                        [alt]="productInCart.product.title">
-                    <p class="fs-small fw-medium">{{productInCart.product.title.split(' ',2).join(' ')}}</p>
-                    <p class="fw-medium fs-small">EGP {{productInCart.price}}</p>
-                    <div class="d-flex">
-                        <button (click)="updateQuantity(productInCart.product.id,productInCart.count + 1)"
-                            class="p-1 bg-light fw-bold border-0 fs-small"><i
-                                class="fa-solid fs-small fa-plus"></i></button>
-                        <input readonly disabled class="text-center" style="width: 20px" type="text"
-                            [value]="productInCart.count">
-                        <button (click)="updateQuantity(productInCart.product.id,--productInCart.count - 1)"
-                            class="p-1 bg-light fw-bold border-0 fs-small"><i
-                                class="fa-solid fs-small fa-minus"></i></button>
-                    </div>
-                    <span (click)="removeProductFromCart(productInCart.product.id)" class="text-danger bg-light px-2"><i
-                            class="fa-solid fa-trash"></i></span>
-                </div>
-
+                <app-cart-grid [productInCart]="productInCart" (productChanges)="getAllProductsInCart()" />
                 <hr>
                 }
                 @empty {
-                <h3>No products added to bag</h3>
-                <a class="text-black" routerLink="/products">Go to Shopping</a>
+                <div class="py-4">
+                    <h3>No products added to bag</h3>
+                <a class="text-black fw-medium" routerLink="/products">Go to Shopping</a>
+                </div>
                 }
 
             </div>
             @if(productsInCart.products.length > 0){
-            <div class="col-sm-12 col-md-3  col-lg-3 mx-auto fit-hight-content py-3 py-sm-4">
+            <div class=" col-md-3   mx-auto fit-hight-content py-3 py-sm-4">
 
                 <div class="d-flex justify-content-between">
                     <p class="text-muted fw-normal">Subtotal </p>
@@ -75,4 +66,3 @@
 
     </div>
 </section>
-<app-action-loading [loading]="isLoading" />

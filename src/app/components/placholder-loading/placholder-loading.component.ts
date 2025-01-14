@@ -10,7 +10,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export class PlacholderLoadingComponent implements OnInit {
   @Input() classInput: string = "col-6 col-sm-6 col-md-4 col-lg-3"
   @Input() numberBoxes: number = 4;
-  arrLoading:number[] = [];
+  @Input() styleImage: string = 'min-height: 200px';
+  arrLoading: number[] = [];
   ngOnInit(): void {
     for (let i = 0; i < this.numberBoxes; i++) {
       this.arrLoading.push(i)

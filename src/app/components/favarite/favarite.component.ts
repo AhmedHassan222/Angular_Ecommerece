@@ -8,11 +8,12 @@ import { IProduct } from '../../core/Interfaces/IProduct';
 import { ActionLoadingComponent } from "../action-loading/action-loading.component";
 import { ToastrService } from 'ngx-toastr';
 import { PlacholderLoadingComponent } from "../placholder-loading/placholder-loading.component";
+import { ProductGridComponent } from "../product-grid/product-grid.component";
 
 @Component({
   selector: 'app-favarite',
   standalone: true,
-  imports: [RouterLink, CurrencyPipe, ActionLoadingComponent, PlacholderLoadingComponent],
+  imports: [RouterLink, CurrencyPipe, ActionLoadingComponent, PlacholderLoadingComponent, ProductGridComponent],
   templateUrl: './favarite.component.html',
   styleUrl: './favarite.component.scss'
 })
@@ -24,7 +25,8 @@ export class FavariteComponent implements OnInit, OnDestroy {
   prodcuts: IProduct[] = [];
   addToFavariteError: string = '';
   getAllProductSubscribe!: Subscription;
-  isLoading: boolean = false;
+  isLoadingFavarite: boolean = false;
+  isLoadingCart: boolean = false;
   placholderLoading: boolean = true;
 
   // functons >>
@@ -53,29 +55,30 @@ export class FavariteComponent implements OnInit, OnDestroy {
   }
 
   addToCart(id: string): void {
-    this.isLoading = true;
+    this.isLoadingCart = true;
     this._CartService.addToCart(id);
     setTimeout(() => {
-      this.isLoading = false;
+      this.isLoadingCart = false;
     }, 2000);
   }
 
 
 
   removeFromFavarite(id: string) {
-    this.isLoading = true;
+    this.isLoadingFavarite = true;
     this._FavariteService.deleteProductFromFavarite(id).subscribe({
       next: (res) => {
         //start here 
         this._FavariteService.updatefavariteCount(res?.data?.length);
         // end here       
-        this.isLoading = false;
         this._ToastrService.error('The product is removed from wishlist');
         this.getAllProductsFavarite();
       },
       error: (err) => {
-        this.isLoading = false;
         this._ToastrService.error(err?.error?.message);
+      },
+      complete:()=>{
+        this.isLoadingFavarite = false;
       }
     })
   }

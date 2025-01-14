@@ -1,32 +1,15 @@
 <div class="container-fluid py-5">
     @if(placholderLoading){
-    <app-placholder-loading />
+    <app-placholder-loading [numberBoxes]="12" [classInput]="'col-6 col-sm-6 col-md-4 col-lg-2'" [styleImage]="'min-height: 200px'" />
     }@else {
     <div class="row g-3">
         <h3 class="h5 fw-medium my-4">Related products </h3>
         @for (product of relatedProducts; track product.id; ) {
         <div class=" col-6 col-sm-6 col-md-4 col-lg-2 ">
-            <div class=" product position-relative">
-                <img [routerLink]="['/products', product.id]" [src]="product.images[0]" class="w-100 carousel-pointer"
-                    [alt]="product.title">
-                <i (click)="addToFavarite(product.id)"
-                    class="fa-regular fa-heart position-absolute p-2 rounded-circle end-0 top-0 m-3 fs-5"></i>
-                <div class="p-3">
-                    <div class="d-flex justify-content-between align-items-center">
-                        <div>
-                            <h3 [routerLink]="['/products', product.id]" class="h6 my-0 carousel-pointer">{{product.title.split('
-                                ',2).join(' ')}}</h3>
-                            <p class="fw-bold my-0">EGP {{product.price}}</p>
-                        </div>
-                        <span (click)="addToCart(product.id)" class="shopping-cart px-3 py-2 rounded-circle "><i
-                                class="fa-solid fa-shopping-bag"></i></span>
-                    </div>
-                </div>
-            </div>
+            <app-product-grid [product]="product" [styleImage]="'min-height: 200px'"/>
 
         </div>
         }
     </div>
     }
 </div>
-<app-action-loading [loading]="isLoading"/>

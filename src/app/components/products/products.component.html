@@ -1,8 +1,8 @@
 <section class="section py-3">
     <div class="container-fluid">
         <div class="my-3">
-            <h3 class="h5 fw-medium">Products</h3>
-            <div class="row my-4">
+            <h3 class="h5 fw-medium my-4">Products</h3>
+            <div class="row ">
                 <div class="col-sm-12 col-md-7 col-lg-3">
                     <div class="input-group ">
                         <span class="input-group-text p-2" id="basic-addon1"><i
@@ -13,41 +13,17 @@
                 </div>
             </div>
         </div>
-        @if(placholderLoading){
-        <app-placholder-loading [numberBoxes]="8" />
+        @if (!placholderLoading && ((prodcuts | search: searchword).length === 0 || prodcuts.length === 0)) {
+        <h3 class="my-4 h5 text-muted fw-medium">There are no products.</h3>
         }
-        @else {
+        @if(placholderLoading){
+        <app-placholder-loading [numberBoxes]="8" [styleImage]="'min-height: 435px'" [classInput]="'col-6 col-sm-6 col-md-4 col-lg-3'"/>
+        }
         <div class="row g-3">
             @for (product of prodcuts | search : searchword; track product.id) {
             <div class=" col-6 col-sm-6 col-md-4 col-lg-3 ">
-                <div class=" product position-relative">
-                    <img [routerLink]="['/products', product.id]" [src]="product.images[0]" class="w-100"
-                        [alt]="product.title">
-                    <i (click)="addToFavarite(product.id)"
-                        class="fa-regular fa-heart position-absolute p-2 rounded-circle end-0 top-0 m-3 fs-5"></i>
-                    <div class="p-3">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div>
-                                <h3 [routerLink]="['/products', product.id]" class="h6 my-0">{{product.title.split('
-                                    ',2).join(' ')}}</h3>
-                                <p class="fw-bold my-0"> {{product.price | currency : 'EGP'}}</p>
-                            </div>
-                            <span (click)="addToCart(product.id)" class="shopping-cart px-3 py-2 rounded-circle "><i
-                                    class="fa-solid fa-shopping-bag"></i></span>
-                        </div>
-                    </div>
-                </div>
-
+                <app-product-grid [product]="product" [styleImage]="'min-height: 435px'" />
             </div>
-
-            }
-            @empty {
-            @if(searchword !== ''){
-            <h3 class="my-4 h5 text-muted fw-medium">There are no products matching your search "{{searchword}}".</h3>
-            }
-            @else {
-            <h3 class="my-4 h5 text-muted fw-medium">There are no products.</h3>
-            }
             }
             <!-- Pagination    -->
             <div class="my-4 text-cetner  d-flex justify-content-center p-2">
@@ -57,17 +33,10 @@
                 }
                 <span
                     class="py-2 px-3 text-center border border-1 border-black fw-medium">{{page}}/{{numberOfPages}}</span>
-                @if(page < numberOfPages){
-                <span (click)="onPageChange(page + 1)"
+                @if(page < numberOfPages){ <span (click)="onPageChange(page + 1)"
                     class="py-2 px-3 text-center border border-1 border-black ">Next</span>
-                }
+                    }
             </div>
-
-
         </div>
-        }
     </div>
-
 </section>
-<!-- loading -->
-<app-action-loading [loading]="isLoading" />
