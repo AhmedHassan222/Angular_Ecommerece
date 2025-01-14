@@ -17,12 +17,12 @@
         <h3 class="my-4 h5 text-muted fw-medium">There are no products.</h3>
         }
         @if(placholderLoading){
-        <app-placholder-loading [numberBoxes]="12" [classInput]="'col-6 col-sm-6 col-md-4 col-lg-2'" [styleImage]="'min-height:200px'"/>
+        <app-placholder-loading [numberBoxes]="12" [classInput]="'col-md-4 col-lg-2'" [styleImage]="'min-height:300px'"/>
         }
         <div class="row g-3">
             @for (product of prodcuts | search : searchword; track product.id) {
-            <div class=" col-6 col-sm-6 col-md-4 col-lg-2 ">
-                <app-product-grid [product]="product" [styleImage]="'min-height:200px'" />
+            <div class="  col-md-4 col-lg-2 ">
+                <app-product-grid [product]="product" [styleImage]="'min-height:300px'" />
             </div>
             }
             <!-- Pagination    -->
