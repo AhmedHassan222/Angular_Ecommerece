@@ -1,52 +1,52 @@
 <section class="section py-5">
   <div class="w-custom mx-auto">
     <h3 class="fs-5 fw-semibold">Sign in </h3>
-    <form class="mb-2" (ngSubmit)="sendData()" [formGroup]="loginForm">
+    <form class="mb-2" (ngSubmit)="sendData()" [formGroup]="loginForm()">
       <div class="form-floating my-3">
         <input id="email" type="text" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
           placeholder="Email" formControlName="email" />
         <label for="email">email</label>
 
-        @if ((loginForm.get('email')?.touched || loginForm.get('email')?.dirty) &&
-        loginForm.get('email')?.errors) {
-        @if (loginForm.get('email')?.getError('required')) {
+        @if ((loginForm().get('email')?.touched || loginForm().get('email')?.dirty) &&
+        loginForm().get('email')?.errors) {
+        @if (loginForm().get('email')?.getError('required')) {
         <p class="text-danger  small pt-1">Email is required</p>
         }
-        @if (loginForm.get('email')?.getError('email')) {
+        @if (loginForm().get('email')?.getError('email')) {
         <p class="text-danger  small pt-1">Invalid email format</p>
         }
         }
       </div>
       <div class="form-floating my-3">
-        <input id="password" [type]="hidden? 'password':'text'" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
+        <input id="password" [type]="hidden()? 'password':'text'" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
           placeholder="Password" formControlName="password" />
         <label for="password">Password</label>
         <div class="d-flex justify-content-end py-2">
           <span class=" fs-small fw-medium text-muted " (click)="toggleAttribute()">
-            @if (hidden) {
+            @if (hidden()) {
             show password
             }@else {
             hidden password
             }
           </span>
         </div>
-        @if ((loginForm.get('password')?.touched || loginForm.get('password')?.dirty) &&
-        loginForm.get('password')?.errors) {
-        @if (loginForm.get('password')?.getError('required')) {
+        @if ((loginForm().get('password')?.touched || loginForm().get('password')?.dirty) &&
+        loginForm().get('password')?.errors) {
+        @if (loginForm().get('password')?.getError('required')) {
         <p class="text-danger  small pt-1">Password is required</p>
         }
-        @if (loginForm.get('password')?.getError('pattern')) {
+        @if (loginForm().get('password')?.getError('pattern')) {
         <p class="text-danger  small pt-1">Password must be 6 digit at least.</p>
         }
         }
       </div>
-      @if (errorMessage) {
-      <p class="fs-6 text-danger">{{errorMessage}}</p>
+      @if (errorMessage()) {
+      <p class="fs-6 text-danger">{{errorMessage()}}</p>
       }
       <button type="submit" class="border-0 btn-special py-3 w-100 rounded-1 my-3 fs-6 fw-normal  text-white"
-        [disabled]="loginForm.invalid || isLoading">
+        [disabled]="loginForm().invalid || isLoading">
         Sign in
-        @if (isLoading) {
+        @if (isLoading()) {
         <i class="fa-spin fa-spinner fa ms-2"> </i>
         }
 

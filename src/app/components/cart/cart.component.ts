@@ -1,8 +1,7 @@
 import { CurrencyPipe } from '@angular/common';
 import { IProductsInCart } from '../../core/Interfaces/iproducts-in-cart';
 import { CartService } from './../../core/service/cart.service';
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FavariteService } from '../../core/service/favarite.service';
+import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { CartLoadingComponent } from "../cart-loading/cart-loading.component";
@@ -15,85 +14,37 @@ import { CartGridComponent } from "../cart-grid/cart-grid.component";
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss'
 })
-export class CartComponent implements OnInit  {
-  _CartService = inject(CartService)
-  _FavariteService = inject(FavariteService)
-  _ToastrService = inject(ToastrService)
-  productsInCart!: IProductsInCart;
-  // isLoadingCart: boolean = false;
-  isLoadingClearAll: boolean = false;
-  // isLoadingUpdateCount: boolean = false;
-  placeholerLoading: boolean = false;
+export class CartComponent implements OnInit {
+  private readonly _CartService = inject(CartService);
+  private readonly _ToastrService = inject(ToastrService)
+  productsInCart: WritableSignal<IProductsInCart | null> = signal<IProductsInCart | null>(null);
+  isLoadingClearAll: WritableSignal<boolean> = signal<boolean>(false);
+  placeholerLoading: WritableSignal<boolean> = signal<boolean>(false);
 
-  getAllProductsInCart():void {
+  getAllProductsInCart(): void {
+    this.placeholerLoading.set(true);
     this._CartService.getAllPrductsCart().subscribe({
       next: (res) => {
-        this.productsInCart = res?.data;
+        this.productsInCart.set(res?.data);
       },
       error: (err) => {
         this._ToastrService.error(err?.error?.message);
       },
-      complete:()=>{
-        this.placeholerLoading = false;
+      complete: () => {
+        this.placeholerLoading.set(false);
       }
     })
 
   }
   ngOnInit(): void {
-    this.placeholerLoading = true;
     this.getAllProductsInCart();
   }
 
-
-
-  // updateQuantity(id: string, count: number): void {
-  //   if (count <= 0) {
-  //     this.removeProductFromCart(id);
-  //   }
-  //   else {
-  //     this.isLoadingUpdateCount = true;
-  //     this._CartService.updateQuantity(id, count).subscribe({
-  //       next: (res) => {
-  //         this._ToastrService.success('The count updated');
-  //         this.productsInCart = res?.data;
-  //       },
-  //       error: (err) => {
-  //         this._ToastrService.error(err?.error?.message);
-  //       },
-  //       complete:()=>{
-  //         this.isLoadingUpdateCount = false;
-  //       }
-  //     })
-  //   }
-  // }
-
-  // removeProductFromCart(id: string): void {
-  //   this.isLoadingCart = true;
-  //   this._CartService.deleteProductFromCart(id).subscribe({
-  //     next: (res) => {
-  //       //start here 
-  //       this._CartService.updateCartCount(res?.numOfCartItems);
-  //       // end here
-  //       this.productsInCart = res.data;
-  //       this._ToastrService.error('The product is removed from cart');
-  //     },
-  //     error: (err) => {
-  //       this._ToastrService.error(err?.error?.message);
-  //     }, 
-  //     complete:()=>{
-  //       this.isLoadingCart = false;
-  //     }
-  //   })
-  // }
   clearAll(): void {
-    this.isLoadingClearAll = true;
+    this.isLoadingClearAll.set(true);
     this._CartService.ClearAllProductsFromCart().subscribe({
       next: () => {
-        //start here 
-        this._CartService.updateCartCount(0);
-        // end here
-        this.productsInCart.products = [];
-        this.productsInCart.totalCartPrice = 0;
+        this._CartService.numberOfItemsInCart.set(0);
         this._ToastrService.error("All producs are removed from cart.");
 
       },
@@ -101,7 +52,7 @@ export class CartComponent implements OnInit  {
         this._ToastrService.error(err?.error?.message);
       },
       complete: () => {
-        this.isLoadingClearAll = false;
+        this.isLoadingClearAll.set(false);
       }
     })
   }

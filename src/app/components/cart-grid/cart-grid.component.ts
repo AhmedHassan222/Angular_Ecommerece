@@ -48,7 +48,7 @@ removeProductFromCart(id: string): void {
   this._CartService.deleteProductFromCart(id).subscribe({
     next: (res) => {
       //start here 
-      this._CartService.updateCartCount(res?.numOfCartItems);
+      // this._CartService.updateCartCount(res?.numOfCartItems);
       // end here
       this.productChanges.emit();
       this._ToastrService.error('The product is removed from cart');

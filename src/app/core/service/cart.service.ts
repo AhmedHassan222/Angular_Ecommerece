@@ -1,6 +1,5 @@
-import { ProductService } from './product.service';
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { ToastrService } from 'ngx-toastr';
@@ -9,15 +8,18 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class CartService {
+  // using signal 
+  numberOfItemsInCart: WritableSignal<number> = signal<number>(0);
+  //end
 
-  // start here 
-  private cartCount = new BehaviorSubject<number>(0);
-  cartCount$ = this.cartCount.asObservable();
+  // // start here 
+  // private cartCount = new BehaviorSubject<number>(0);
+  // cartCount$ = this.cartCount.asObservable();
 
 
-  updateCartCount(count: number): void {
-    this.cartCount.next(count);
-  }
+  // updateCartCount(count: number): void {
+  //   this.cartCount.next(count);
+  // }
 
 
   // end here
@@ -32,7 +34,8 @@ export class CartService {
       }
     }).subscribe({
       next: (res: any) => {
-        this.updateCartCount(res?.data?.products?.length);
+        // this.updateCartCount(res?.data?.products?.length);
+        this.numberOfItemsInCart.set(res?.data?.products?.length);
         this.toastr.success('The product is added to cart');
       },
       error: (err) => {

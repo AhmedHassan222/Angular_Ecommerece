@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, input, InputSignal } from '@angular/core';
 
 @Component({
   selector: 'app-action-loading',
@@ -8,5 +8,5 @@ import { Component, Input } from '@angular/core';
   styleUrl: './action-loading.component.scss'
 })
 export class ActionLoadingComponent {
-  @Input() loading:boolean = false;
+  loading:InputSignal<boolean> = input<boolean>(false);
 }

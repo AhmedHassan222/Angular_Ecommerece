@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { environment } from '../environments/environment';
 import { ProductService } from './product.service';
@@ -10,15 +10,19 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class FavariteService {
-
-  // start here 
-  private favariteCount = new BehaviorSubject<number>(0);
-  favariteCount$ = this.favariteCount.asObservable();
+  // using signal 
+  numberOfItemsFavarite:WritableSignal<number> = signal(0);
 
 
-  updatefavariteCount(count: number): void {
-    this.favariteCount.next(count);
-  }
+  // // end
+  // // start here 
+  // private favariteCount = new BehaviorSubject<number>(0);
+  // favariteCount$ = this.favariteCount.asObservable();
+
+
+  // updatefavariteCount(count: number): void {
+  //   this.favariteCount.next(count);
+  // }
 
 
   // end here
@@ -37,9 +41,7 @@ export class FavariteService {
       }
     ).subscribe({
       next: (res: any) => {
-        // start here 
-        this.updatefavariteCount(res?.data?.length)
-        // end here
+        this.numberOfItemsFavarite.set(res?.data?.length)
         this._ToastrService.success('The product is added to wishlist');
       },
       error: (err) => {

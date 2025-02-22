@@ -13,27 +13,27 @@
                 </div>
             </div>
         </div>
-        @if (!placholderLoading && ((prodcuts | search: searchword).length === 0 || prodcuts.length === 0)) {
+        @if (!placholderLoading() && ((prodcuts() | search: searchword()).length === 0 || prodcuts().length === 0)) {
         <h3 class="my-4 h5 text-muted fw-medium">There are no products.</h3>
         }
-        @if(placholderLoading){
+        @if(placholderLoading()){
         <app-placholder-loading [numberBoxes]="12" [classInput]="'col-md-4 col-lg-2'" [styleImage]="'min-height:300px'"/>
         }
         <div class="row g-3">
-            @for (product of prodcuts | search : searchword; track product.id) {
+            @for (product of prodcuts() | search : searchword(); track product.id) {
             <div class="  col-md-4 col-lg-2 ">
                 <app-product-grid [product]="product" [styleImage]="'min-height:300px'" />
             </div>
             }
             <!-- Pagination    -->
             <div class="my-4 text-cetner  d-flex justify-content-center p-2">
-                @if(page > 1){
-                <span (click)="onPageChange(page - 1)"
+                @if(page() > 1){
+                <span (click)="onPageChange(page() - 1)"
                     class="py-2 px-3 text-center border border-1 border-black ">Prev</span>
                 }
                 <span
-                    class="py-2 px-3 text-center border border-1 border-black fw-medium">{{page}}/{{numberOfPages}}</span>
-                @if(page < numberOfPages){ <span (click)="onPageChange(page + 1)"
+                    class="py-2 px-3 text-center border border-1 border-black fw-medium">{{page()}}/{{numberOfPages()}}</span>
+                @if(page < numberOfPages){ <span (click)="onPageChange(page() + 1)"
                     class="py-2 px-3 text-center border border-1 border-black ">Next</span>
                     }
             </div>

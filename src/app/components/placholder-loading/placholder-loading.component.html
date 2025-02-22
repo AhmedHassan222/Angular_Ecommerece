@@ -1,8 +1,8 @@
 <div class="row g-3">
-    @for (item of arrLoading; track $index) {
-    <div [class]="classInput" >
+    @for (item of arrLoading(); track $index) {
+    <div [class]="classInput()" >
         <div class="card rounded-0" aria-hidden="true">
-            <img src="./assets/loadingImage.jfif" class="card-img-top rounded-0" [style]="styleImage" alt="loading image">
+            <img src="./assets/loadingImage.jfif" class="card-img-top rounded-0" [style]="styleImage()" alt="loading image">
             <div class="card-body">
                 <p class="card-text placeholder-glow">
                     <span class="placeholder col-7"></span>

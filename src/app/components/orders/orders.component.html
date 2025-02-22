@@ -12,7 +12,7 @@
                 </tr>
             </thead>
             <tbody>
-                @for (order of orders; track $index) {
+                @for (order of orders(); track $index) {
                 <tr>
                     <td >{{order.paidAt | date}}</td>
                     <td >{{order.id}}</td>

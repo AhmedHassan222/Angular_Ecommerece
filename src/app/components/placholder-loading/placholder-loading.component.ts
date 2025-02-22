@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, input, Input, InputSignal, OnInit, signal, WritableSignal } from '@angular/core';
 
 @Component({
   selector: 'app-placholder-loading',
@@ -8,13 +8,15 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrl: './placholder-loading.component.scss'
 })
 export class PlacholderLoadingComponent implements OnInit {
-  @Input() classInput: string = "col-6 col-sm-6 col-md-4 col-lg-3"
-  @Input() numberBoxes: number = 4;
-  @Input() styleImage: string = 'min-height: 200px';
-  arrLoading: number[] = [];
+  classInput: InputSignal<string> = input("col-6 col-sm-6 col-md-4 col-lg-3");
+  numberBoxes: InputSignal<number> = input(4);
+  styleImage: InputSignal<string> = input("min-height: 200px");
+  arrLoading: WritableSignal<number[]> = signal([]);
+
+
   ngOnInit(): void {
-    for (let i = 0; i < this.numberBoxes; i++) {
-      this.arrLoading.push(i)
+    for (let i = 0; i < this.numberBoxes(); i++) {
+      this.arrLoading().push(i);
     }
   }
 }

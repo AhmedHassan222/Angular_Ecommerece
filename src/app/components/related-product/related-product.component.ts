@@ -1,68 +1,67 @@
 import { IProduct } from '../../core/Interfaces/IProduct';
 import { ProductService } from './../../core/service/product.service';
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { Component, inject, input, InputSignal, OnInit, signal, WritableSignal } from '@angular/core';
 import { CartService } from '../../core/service/cart.service';
 import { ToastrService } from 'ngx-toastr';
 import { FavariteService } from '../../core/service/favarite.service';
 import { PlacholderLoadingComponent } from '../placholder-loading/placholder-loading.component';
-import { ActionLoadingComponent } from "../action-loading/action-loading.component";
-import { RouterLink } from '@angular/router';
 import { ProductGridComponent } from "../product-grid/product-grid.component";
 
 @Component({
   selector: 'app-related-product',
   standalone: true,
-  imports: [PlacholderLoadingComponent, ActionLoadingComponent, RouterLink, ProductGridComponent],
+  imports: [PlacholderLoadingComponent, ProductGridComponent],
   templateUrl: './related-product.component.html',
   styleUrl: './related-product.component.scss'
 })
 export class RelatedProductComponent implements OnInit {
-  _ProductService = inject(ProductService);
-  _CartService = inject(CartService);
-  _FavariteService = inject(FavariteService);
-  _ToastrService = inject(ToastrService);
+  private readonly _ProductService = inject(ProductService);
+  private readonly _CartService = inject(CartService);
+  private readonly _FavariteService = inject(FavariteService);
+  private readonly _ToastrService = inject(ToastrService);
+  products: WritableSignal<IProduct[]> = signal([]);
+  relatedProducts: WritableSignal<IProduct[]> = signal([]);
+  isLoading: WritableSignal<boolean> = signal(false);
+  placholderLoading: WritableSignal<boolean> = signal(true);
+  category: InputSignal<string> = input('')
+  brand: InputSignal<string> = input('')
 
-
-  products: IProduct[] = [];
-  relatedProducts: IProduct[] = [];
-  isLoading: boolean = false;
-  placholderLoading: boolean = true;
-  @Input() category!: string;
-  @Input() brand!: string;
   getRelatedProducts(categoryName: string, brandName: string): void {
     this._ProductService.getAllProduct().subscribe({
       next: (res) => {
-        setTimeout(() => {
-          this.placholderLoading = false;
-        }, 2000);
-        this.products = res?.data;
-        this.relatedProducts = this.products.filter(p => p.category.name === categoryName && p.brand.name === brandName);
+        this.products.set(res?.data);
+        this.relatedProducts.set(this.products().filter(p => p.category.name === categoryName && p.brand.name === brandName));
       },
       error: (err) => {
         this._ToastrService.error(err?.error?.message);
+      },
+      complete: () => {
+        setTimeout(() => {
+          this.placholderLoading.set(false);
+        }, 2000);
       }
     })
   }
 
   ngOnInit(): void {
 
-    this.getRelatedProducts(this.category, this.brand)
+    this.getRelatedProducts(this.category(), this.brand());
   }
 
   addToCart(id: string): void {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this._CartService.addToCart(id);
     setTimeout(() => {
-      this.isLoading = false;
+      this.isLoading.set(false);
     }, 2000);
   }
 
 
   addToFavarite(id: string): void {
-    this.isLoading = true;
+    this.isLoading.set(true);
     this._FavariteService.addToFavarite(id);
     setTimeout(() => {
-      this.isLoading = false;
+      this.isLoading.set(false);
     }, 2000);
   }
 

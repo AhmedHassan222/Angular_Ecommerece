@@ -1,5 +1,5 @@
 
-import { Component, inject } from '@angular/core';
+import { Component, inject, WritableSignal, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
@@ -9,49 +9,48 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [ ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
 })
 export class ChangePasswordComponent {
-  isLoading:boolean = false;
-  changePassword: FormGroup = new FormGroup({
+  private readonly _AuthService: AuthService = inject(AuthService);
+  private readonly _ToastrService = inject(ToastrService);
+  private readonly _Router = inject(Router);
+  isLoading: WritableSignal<boolean> = signal(false);
+  changePassword: WritableSignal<FormGroup> = signal(new FormGroup({
     currentPassword: new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z0-9]{6,}')]),
     password: new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z0-9]{6,}')]),
     rePassword: new FormControl(null)
-  } , this.confirmPassword);
+  }, this.confirmPassword));
 
-  _authService:AuthService= inject(AuthService);
-  _ToastrService= inject(ToastrService);
-  _Router= inject(Router);
-  sendData():void 
-  {
-    this.isLoading = true;
-    this._authService.changePassword(this.changePassword.value).subscribe({
-      next:(res)=>{
-        this.isLoading = false;
-         if(res?.message === "success")
-          {
-            this._authService.logOut();
-            this._authService.saveUserData();
-            this._Router.navigate(['/auth/login']);
-            this._ToastrService.success('Password has been changed')
-          }
+
+  sendData(): void {
+    this.isLoading.set(true);
+    this._AuthService.changePassword(this.changePassword().value).subscribe({
+      next: (res) => {
+        if (res?.message === "success") {
+          this._AuthService.logOut();
+          this._AuthService.saveUserData();
+          this._Router.navigate(['/auth/login']);
+          this._ToastrService.success('Password has been changed')
+        }
       },
-      error:(err:HttpErrorResponse)=>{
-        this.isLoading = false;
+      error: (err: HttpErrorResponse) => {
         this._ToastrService.error(err?.error?.message)
 
+      },
+      complete: () => {
+        this.isLoading.set(false);
       }
     })
   }
 
-    confirmPassword(g:AbstractControl)
-    {
-      if(g.get('password')?.value === g.get('rePassword')?.value)
-        return null;
-      else 
-        return {mismatch:true}
-    }
-  
+  confirmPassword(g: AbstractControl) {
+    if (g.get('password')?.value === g.get('rePassword')?.value)
+      return null;
+    else
+      return { mismatch: true }
+  }
+
 }

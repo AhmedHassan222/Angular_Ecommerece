@@ -9,7 +9,7 @@ export interface IProductsInCart {
     totalCartPrice: number;
 }
 
-interface Product2 {
+export interface Product2 {
     count: number;
     _id: string;
     product: Product;

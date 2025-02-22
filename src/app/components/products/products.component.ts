@@ -1,11 +1,9 @@
 import { ProductService } from './../../core/service/product.service';
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import { Component, OnDestroy, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { IProduct } from '../../core/Interfaces/IProduct';
 import { SearchPipe } from '../../core/pipes/search.pipe';
-import { CartService } from '../../core/service/cart.service';
-import { FavariteService } from '../../core/service/favarite.service';
 import { ToastrService } from 'ngx-toastr';
 import { PlacholderLoadingComponent } from "../placholder-loading/placholder-loading.component";
 import { MetaDataProduct } from '../../core/Interfaces/meta-data-product';
@@ -20,50 +18,48 @@ import { ProductGridComponent } from '../product-grid/product-grid.component';
 })
 export class ProductsComponent implements OnInit, OnDestroy {
   // Dependancy Injection
-  _ProductService = inject(ProductService);
-  _CartService = inject(CartService);
-  _FavariteService = inject(FavariteService);
-  _ToastrService = inject(ToastrService);
-   _Subscription = new Subscription();
+  private readonly _ProductService = inject(ProductService);
+  private readonly _ToastrService = inject(ToastrService);
+  private readonly _Subscription = new Subscription();
 
   // properties
-  prodcuts: IProduct[] = [];
-  searchword: string = '';
-  arrayOfProductsIds: string[] = [];
-  isLoading: boolean = false;
-  placholderLoading: boolean = false;
-  metaData!: MetaDataProduct;
-  page: number = 1;
-  numberOfPages: number = 1;
+  prodcuts: WritableSignal<IProduct[]> = signal([]);
+  searchword: WritableSignal<string> = signal('');
+  arrayOfProductsIds: WritableSignal<string[]> = signal([]);
+  isLoading: WritableSignal<boolean> = signal(false);
+  placholderLoading: WritableSignal<boolean> = signal(false);
+  metaData: WritableSignal<MetaDataProduct> = signal({} as MetaDataProduct);
+  page: WritableSignal<number> = signal(1);
+  numberOfPages: WritableSignal<number> = signal(1);
 
   // functons >>
   getAllProducts(pageNumber: number = 1) {
-    this.placholderLoading = true;
+    this.placholderLoading.set(true);
     this._Subscription.add(this._ProductService.getAllProduct(pageNumber).subscribe({
       next: (res) => {
-        this.prodcuts = res.data;
-        this.metaData = res.metadata;
-        this.page = this.metaData.currentPage;
-        this.numberOfPages = this.metaData.numberOfPages;
+        this.prodcuts.set(res.data);
+        this.metaData.set(res.metadata);
+        this.page.set(this.metaData().currentPage);
+        this.numberOfPages.set(this.metaData().numberOfPages);
       },
       error: (err) => {
         this._ToastrService.error(err?.error?.message);
       },
-      complete:()=>{
-          this.placholderLoading = false;
+      complete: () => {
+        this.placholderLoading.set(false);
       }
-    })) ;
+    }));
   }
 
 
   ngOnInit(): void {
-    this.getAllProducts(this.page);
+    this.getAllProducts(this.page());
   }
 
-  
+
   onPageChange(page: number): void {
     this.getAllProducts(page)
-    window.scroll(0,0)
+    window.scroll(0, 0)
   }
 
   ngOnDestroy(): void {

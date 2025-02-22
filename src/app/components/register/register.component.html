@@ -1,15 +1,15 @@
 <section class="section py-5">
   <div class="w-custom mx-auto">
     <h3 class="fs-5 fw-semibold">Create your account </h3>
-    <form class="mb-2" (ngSubmit)="sendData()" [formGroup]="registerForm">
+    <form class="mb-2" (ngSubmit)="sendData()" [formGroup]="registerForm()">
       <div class="form-floating my-3">
         <input id="name" type="text" class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1"
           placeholder="Name" formControlName="name" />
         <label for="name">Name</label>
 
-        @if ((registerForm.get('name')?.touched || registerForm.get('name')?.dirty) && registerForm.get('name')?.errors)
+        @if ((registerForm().get('name')?.touched || registerForm().get('name')?.dirty) && registerForm().get('name')?.errors)
         {
-        @if (registerForm.get('name')?.getError('required')) {
+        @if (registerForm().get('name')?.getError('required')) {
         <p class="text-danger  small pt-1">Name is required</p>
         }
         }
@@ -19,49 +19,49 @@
           placeholder="Email" formControlName="email" />
         <label for="email">email</label>
 
-        @if ((registerForm.get('email')?.touched || registerForm.get('email')?.dirty) &&
-        registerForm.get('email')?.errors) {
-        @if (registerForm.get('email')?.getError('required')) {
+        @if ((registerForm().get('email')?.touched || registerForm().get('email')?.dirty) &&
+        registerForm().get('email')?.errors) {
+        @if (registerForm().get('email')?.getError('required')) {
         <p class="text-danger  small pt-1">Email is required</p>
         }
-        @if (registerForm.get('email')?.getError('email')) {
+        @if (registerForm().get('email')?.getError('email')) {
         <p class="text-danger  small pt-1">Invalid email format</p>
         }
         }
       </div>
       <div class="form-floating my-3">
-        <input id="password" [type]="hidden? 'password':'text'"
+        <input id="password" [type]="hidden()? 'password':'text'"
           class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1" placeholder="Password"
           formControlName="password" />
         <label for="password">Password</label>
         <div class="d-flex justify-content-end py-2">
           <span class=" fs-small fw-medium text-muted " (click)="toggleAttribute()">
-            @if (hidden) {
+            @if (hidden()) {
             show password
             }@else {
-            hidden password
+            hidden() password
             }
           </span>
         </div>
 
-        @if ((registerForm.get('password')?.touched || registerForm.get('password')?.dirty) &&
-        registerForm.get('password')?.errors) {
-        @if (registerForm.get('password')?.getError('required')) {
+        @if ((registerForm().get('password')?.touched || registerForm().get('password')?.dirty) &&
+        registerForm().get('password')?.errors) {
+        @if (registerForm().get('password')?.getError('required')) {
         <p class="text-danger  small pt-1">Password is required</p>
         }
-        @if (registerForm.get('password')?.getError('pattern')) {
+        @if (registerForm().get('password')?.getError('pattern')) {
         <p class="text-danger  small pt-1">Password must be 6 digit at least.</p>
         }
         }
       </div>
       <div class="form-floating my-3">
-        <input id="rePassword" [type]="hidden? 'password':'text'"
+        <input id="rePassword" [type]="hidden()? 'password':'text'"
           class="form-control rounded-0 border-gray px-3 w-100 py-3 border border-1" placeholder="Conferm Password"
           formControlName="rePassword" />
         <label for="rePassword">Confirm Password</label>
 
-        @if ( (registerForm.get('rePassword')?.touched || registerForm.get('rePassword')?.dirty) &&
-        registerForm.getError('mismatch')) {
+        @if ( (registerForm().get('rePassword')?.touched || registerForm().get('rePassword')?.dirty) &&
+        registerForm().getError('mismatch')) {
         <p class="text-danger  small pt-1">confirm password must match password.</p>
         }
       </div>
@@ -70,23 +70,23 @@
           formControlName="phone" />
         <label for="phone">Phone</label>
 
-        @if ((registerForm.get('phone')?.touched || registerForm.get('phone')?.dirty) &&
-        registerForm.get('phone')?.errors) {
-        @if (registerForm.get('phone')?.getError('required')) {
+        @if ((registerForm().get('phone')?.touched || registerForm().get('phone')?.dirty) &&
+        registerForm().get('phone')?.errors) {
+        @if (registerForm().get('phone')?.getError('required')) {
         <p class="text-danger  small pt-1">Phone is required</p>
         }
-        @if (registerForm.get('phone')?.getError('pattern')) {
+        @if (registerForm().get('phone')?.getError('pattern')) {
         <p class="text-danger  small pt-1">Access egyption phone only.</p>
         }
         }
       </div>
-      @if (errorMessage) {
-      <p class="fs-6 text-danger">{{errorMessage}}</p>
+      @if (errorMessage()) {
+      <p class="fs-6 text-danger">{{errorMessage()}}</p>
       }
       <button type="submit" class="border-0 btn-special py-3 w-100 rounded-1 mt-2 fs-6 fw-normal  text-white"
-        [disabled]="registerForm.invalid || isLoading">
+        [disabled]="registerForm().invalid || isLoading()">
         Create Account
-        @if (isLoading) {
+        @if (isLoading()) {
         <i class="fa-spin fa-spinner fa ms-2"> </i>
         }
 

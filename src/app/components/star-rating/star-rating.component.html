@@ -1,5 +1,5 @@
 <div class="stars">
-    @for (star of stars; track $index) {
+    @for (star of stars(); track $index) {
     <div class="star" [ngClass]="{
         'full': star === 'full',
         'empty': star === 'empty'

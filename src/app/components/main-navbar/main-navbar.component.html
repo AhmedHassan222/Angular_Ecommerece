@@ -11,17 +11,17 @@
         <li class="nav-item">
           <a class="nav-link text-black fw-medium" aria-current="page" routerLinkActive="border-bottom border-black" routerLink="/products">Products</a>
         </li>
-        @if(isLogin){
+        @if(isLogin()){
         <li class="nav-item">
           <a class="nav-link text-black fw-medium " aria-current="page" routerLinkActive="border-bottom border-black" routerLink="/profile">Profile</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-black fw-medium " aria-current="page"
-            routerLinkActive="border-bottom border-black" routerLink="/favarite">favorites({{favariteCount}})</a>
+            routerLinkActive="border-bottom border-black" routerLink="/favarite">favorites({{favariteCount()}})</a>
         </li>
         <li class="nav-item">
           <a class="nav-link text-black fw-medium " aria-current="page"
-            routerLinkActive="border-bottom border-black" routerLink="/cart">Bag({{cartCount}})</a>
+            routerLinkActive="border-bottom border-black" routerLink="/cart">Bag({{cartCount()}})</a>
         </li>
         }
         @else {

@@ -1,5 +1,5 @@
 import { ActivatedRoute } from '@angular/router';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { OrderService } from '../../core/service/order.service';
 import { ToastrService } from 'ngx-toastr';
@@ -12,38 +12,42 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './checkout.component.scss'
 })
 export class CheckoutComponent implements OnInit {
-  _ActivatedRoute = inject(ActivatedRoute)
-  _OrderService = inject(OrderService)
-  errorMessage: string = '';
-  cartId: string  = '';
-  isLoading: boolean = false;
-  orderForm: FormGroup = new FormGroup({
+  private readonly _ActivatedRoute = inject(ActivatedRoute)
+  private readonly _OrderService = inject(OrderService)
+  private readonly _ToastrService = inject(ToastrService);
+  errorMessage: WritableSignal<string> = signal('');
+  cartId: WritableSignal<string> = signal('');
+  isLoading: WritableSignal<boolean> = signal(false);
+  
+  // form group
+  orderForm: WritableSignal<FormGroup> = signal(new FormGroup({
     details: new FormControl(null),
     phone: new FormControl(null, [Validators.required, Validators.pattern('^01[0125][0-9]{8}$')]),
     city: new FormControl(null, [Validators.required])
-  })
-   _ToastrService = inject(ToastrService);
+  }));
+
+
   ngOnInit(): void {
     this._ActivatedRoute.paramMap.subscribe({
       next: (params) => {
-        this.cartId =  params.get('id') as string;
+        this.cartId.set(params.get('id') as string);
       }
     })
   }
+
   sendData(): void {
-    this.isLoading = true;
-    this._OrderService.checkout(this.orderForm.value , this.cartId).subscribe({
-      next:(res)=>{
-        this.isLoading = false;
-        if(res.status === "success")
-        {
-          window.open(res.session.url , "_self")
+    this.isLoading.set(true);
+    this._OrderService.checkout(this.orderForm().value, this.cartId()).subscribe({
+      next: (res) => {
+        if (res.status === "success") {
+          window.open(res.session.url, "_self")
         }
       },
-      error:(err)=>{
-        this.isLoading = false;
+      error: (err) => {
         this._ToastrService.error(err?.error?.message);
-
+      },
+      complete: () => {
+        this.isLoading.set(false);
       }
     })
   }

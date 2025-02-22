@@ -1,5 +1,5 @@
 import { AuthService } from './../../core/service/auth.service';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, computed, inject, OnInit, signal, Signal, WritableSignal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CartService } from '../../core/service/cart.service';
 import { FavariteService } from '../../core/service/favarite.service';
@@ -16,22 +16,22 @@ import { FavariteService } from '../../core/service/favarite.service';
   styleUrl: './main-navbar.component.scss'
 })
 export class MainNavbarComponent implements OnInit {
-  _AuthService = inject(AuthService)
-  _CartService = inject(CartService)
-  _FavariteService = inject(FavariteService)
-  menu: boolean = false;
+  private readonly _AuthService = inject(AuthService)
+  private readonly _CartService = inject(CartService)
+  private readonly _FavariteService = inject(FavariteService)
+  menu: WritableSignal<boolean> = signal(false);
+  isLogin: WritableSignal<boolean> = signal(false);
+  cartCount: Signal<number> = computed(() => this._CartService.numberOfItemsInCart());
+  favariteCount: Signal<number> = computed(() => this._FavariteService.numberOfItemsFavarite());
+
   openMenu(): void {
-    this.menu = !this.menu;
+    this.menu.update(val => !val);
   }
-  isLogin:boolean = false;
-  cartCount: number = 0;
-  favariteCount: number = 0;
 
-
-   private setupUserDataListener(): void {
+  private setupUserDataListener(): void {
     this._AuthService.userData.subscribe({
       next: (userData) => {
-        this.isLogin = !!userData;
+        this.isLogin.set(!!userData);
       },
     });
   }
@@ -39,28 +39,22 @@ export class MainNavbarComponent implements OnInit {
   ngOnInit(): void {
     this.setupUserDataListener();
     this.getCountFavAndCart();
-    this._CartService.cartCount$.subscribe((count) => {
-      this.cartCount = count;
-    });
-    this._FavariteService.favariteCount$.subscribe((count) => {
-      this.favariteCount = count;
-    });
   }
   getCountFavAndCart() {
     this._CartService.getAllPrductsCart().subscribe({
       next: (res) => {
-        this.cartCount = res.data.products.length;
+        this._CartService.numberOfItemsInCart.set(res.data.products.length);
       },
       error: () => {
-        this.cartCount = 0;
+        this._CartService.numberOfItemsInCart.set(0);
       }
     })
     this._FavariteService.getAllPrductsFavarites().subscribe({
       next: (res) => {
-        this.favariteCount = res.data.length;
+        this._FavariteService.numberOfItemsFavarite.set(res.data.length);
       },
       error: () => {
-        this.favariteCount = 0;
+        this._FavariteService.numberOfItemsFavarite.set(0);
       }
     })
   }

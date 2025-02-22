@@ -1,5 +1,5 @@
 import { AuthService } from './../../core/service/auth.service';
-import { Component, ElementRef, inject, QueryList, ViewChildren, viewChildren } from '@angular/core';
+import { Component, ElementRef, inject, QueryList, signal, ViewChildren, viewChildren, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -11,88 +11,91 @@ import { Router, RouterLink } from '@angular/router';
   styleUrl: './forget-password.component.scss'
 })
 export class ForgetPasswordComponent {
-  // property 
-  isLoading: boolean = false;
-  status: string = 'verifyCode';
-  errorMessage!: string;
-  successMessage!: string;
+
+  private readonly _AuthSErvice = inject(AuthService);
+  private readonly _Router = inject(Router);
+  isLoading: WritableSignal<boolean> = signal(false);
+  status: WritableSignal<string> = signal('verifyCode');
+  errorMessage: WritableSignal<string> = signal("");
+  successMessage: WritableSignal<string> = signal("");
   @ViewChildren('input') inputs!: QueryList<ElementRef>;
+
   // forms >>
-  verifyEmail: FormGroup = new FormGroup({
+  verifyEmail: WritableSignal<FormGroup> = signal(new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email])
-  })
-  verifyCode: FormGroup = new FormGroup({
+  }));
+
+  verifyCode: WritableSignal<FormGroup> = signal(new FormGroup({
     resetCode: new FormControl(null, [Validators.required, Validators.pattern('[0-9]{6}')]),
-  })
-  resetPassword: FormGroup = new FormGroup({
+  }));
+
+  resetPassword: WritableSignal<FormGroup> = signal(new FormGroup({
     email: new FormControl(null, [Validators.required, Validators.email]),
     newPassword: new FormControl(null, [Validators.required, Validators.pattern('[a-zA-Z0-9]{6,}')]),
 
-  })
+  }));
 
-  // injection >>
-  _AuthSErvice = inject(AuthService);
-  _Router = inject(Router);
+
 
 
   // functions >>
   verifyEmailFun(): void {
-    this.resetPassword.get('email')?.patchValue(this.verifyEmail.get('email')?.value)
-    this.successMessage = '';
-    this.errorMessage = '';
-    this.isLoading = true;
-    this._AuthSErvice.verifyEmail(this.verifyEmail.value).subscribe({
-      next:(res)=>{
-        this.isLoading = false;
-        this.status = "verifyCode"
-        this.successMessage = res?.message;
+    this.resetPassword().get('email')?.patchValue(this.verifyEmail().get('email')?.value)
+    this.successMessage.set('');
+    this.errorMessage.set('');
+    this.isLoading.set(true);
+    this._AuthSErvice.verifyEmail(this.verifyEmail().value).subscribe({
+      next: (res) => {
+        this.status.set("verifyCode");
+        this.successMessage.set(res?.message);
 
       },
-      error:(err)=>{
-        this.isLoading = false;
-        this.errorMessage = err?.error?.message
+      error: (err) => {
+        this.errorMessage.set(err?.error?.message);
+      },
+      complete: () => {
+        this.isLoading.set(false);
       }
     })
 
   }
+
   verifyCodeFun(): void {
-    this.successMessage = '';
-    this.errorMessage = '';
-    this.isLoading = true;
-    this._AuthSErvice.verifyCode(this.verifyCode.value).subscribe({
-      next:()=>{
-        this.isLoading = false;
-        this.status = "forgetPassword"
+    this.successMessage.set('');
+    this.errorMessage.set('');
+    this.isLoading.set(true);
+    this._AuthSErvice.verifyCode(this.verifyCode().value).subscribe({
+      next: () => {
+        this.status.set("forgetPassword");
 
       },
-      error:(err)=>{
-        this.isLoading = false;
-        this.errorMessage = err?.error?.message
+      error: (err) => {
+        this.errorMessage.set(err?.error?.message);
+      },
+      complete: () => {
+        this.isLoading.set(false);
       }
     })
 
   }
+
   forgetPasswordFun(): void {
-    this.successMessage = '';
-    this.errorMessage = '';
-    this.isLoading = true;
-    this._AuthSErvice.forgetPassword(this.resetPassword.value).subscribe({
-      next:(res)=>{
-        this.isLoading = false;
-        localStorage.setItem('token',res?.token)
-        this.status = 'verifyEmail';
-        this._AuthSErvice.saveUserData();
+    this.successMessage.set('');
+    this.errorMessage.set('');
+    this.isLoading.set(true);
+    this._AuthSErvice.forgetPassword(this.resetPassword().value).subscribe({
+      next: (res) => {
+        localStorage.setItem('token', res?.token)
+        this.status.set('verifyEmail');
         this._AuthSErvice.saveUserData();
         this._Router.navigate(['/'])
-
       },
-      error:(err)=>{
-        this.isLoading = false;
-        this.errorMessage = err?.error?.message
+      error: (err) => {
+        this.errorMessage.set(err?.error?.message);
+      },
+      complete: () => {
+        this.isLoading.set(false);
       }
     })
-
   }
-
-
 }

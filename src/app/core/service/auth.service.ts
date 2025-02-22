@@ -1,9 +1,8 @@
 import { environment } from './../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { User } from '../Interfaces/user';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 
@@ -29,14 +28,17 @@ export class AuthService {
   login(model: object): Observable<any> {
     return this._HttpClient.post(`${environment.baseUrl}/api/v1/auth/signin`, model);
   }
-  saveUserData():void{
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        this.userData.next(decoded);
-      } catch (error) {
-        localStorage.removeItem('token');
+  saveUserData(): void {
+    if (isPlatformBrowser(this.platform)) {
+
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const decoded = jwtDecode(token);
+          this.userData.next(decoded);
+        } catch (error) {
+          localStorage.removeItem('token');
+        }
       }
     }
   };

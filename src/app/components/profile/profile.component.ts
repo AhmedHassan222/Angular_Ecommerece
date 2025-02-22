@@ -1,9 +1,10 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { User } from '../../core/Interfaces/user';
-import { TitleCasePipe } from '@angular/common';
+import { isPlatformBrowser, TitleCasePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
+import { platformBrowser } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -13,21 +14,23 @@ import { AuthService } from '../../core/service/auth.service';
   styleUrl: './profile.component.scss'
 })
 export class ProfileComponent implements OnInit {
-  user!: User;
-  userName:string = "";
-  _AuthService= inject(AuthService);
-  _Router= inject(Router);
+  private readonly _AuthService = inject(AuthService);
+  private readonly _Router = inject(Router);
+  private readonly _PLATFORM_ID = inject(PLATFORM_ID);
+  user: WritableSignal<User> = signal({} as User);
+  userName: WritableSignal<string> = signal("");
   ngOnInit(): void {
-    let user:User = jwtDecode(localStorage.getItem('token') as string);
-    this._AuthService.getUserDetails(user.id).subscribe({
-      next:(res)=>{
-        user = res.data;
-        this.userName = user?.name;
-      }
-    })
+    if (isPlatformBrowser(this._PLATFORM_ID)) {
+      this.user.set(jwtDecode(localStorage.getItem('token') as string))
+      this._AuthService.getUserDetails(this.user().id).subscribe({
+        next: (res) => {
+          this.user.set(res.data);
+          this.userName.set(this.user()?.name);
+        }
+      })
+    }
   }
-  logOut():void 
-  {
+  logOut(): void {
     this._AuthService.logOut();
     this._Router.navigate(['/login'])
     this._AuthService.saveUserData();

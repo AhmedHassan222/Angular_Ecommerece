@@ -1,6 +1,6 @@
 <section class="section py-5">
     <div class="container-fluid w-custom ">
-        <h3 class="my-4 fw-semibold">Hello {{userName.split(' ', 2).join(' ')| titlecase}}</h3>
+        <h3 class="my-4 fw-semibold">Hello {{userName().split(' ', 2).join(' ')| titlecase}}</h3>
         <button routerLink="/favarite"
             class="w-100 py-2 fw-medium d-flex align-items-start justify-content-between pt-3 px-4  pb-0 fs-6 border-0 my-2">
             <p>Wishlist</p> <i class="fa-solid fa-arrow-right"></i>
