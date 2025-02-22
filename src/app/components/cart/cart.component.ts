@@ -22,13 +22,9 @@ export class CartComponent implements OnInit {
   placeholerLoading: WritableSignal<boolean> = signal<boolean>(false);
 
   getAllProductsInCart(): void {
-    this.placeholerLoading.set(true);
     this._CartService.getAllPrductsCart().subscribe({
       next: (res) => {
         this.productsInCart.set(res?.data);
-      },
-      error: (err) => {
-        this._ToastrService.error(err?.error?.message);
       },
       complete: () => {
         this.placeholerLoading.set(false);
@@ -37,6 +33,7 @@ export class CartComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.placeholerLoading.set(true);
     this.getAllProductsInCart();
   }
 
@@ -44,12 +41,10 @@ export class CartComponent implements OnInit {
     this.isLoadingClearAll.set(true);
     this._CartService.ClearAllProductsFromCart().subscribe({
       next: () => {
+        this.productsInCart.set(null);
         this._CartService.numberOfItemsInCart.set(0);
         this._ToastrService.error("All producs are removed from cart.");
 
-      },
-      error: (err) => {
-        this._ToastrService.error(err?.error?.message);
       },
       complete: () => {
         this.isLoadingClearAll.set(false);

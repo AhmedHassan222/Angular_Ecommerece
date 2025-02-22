@@ -15,7 +15,6 @@ export class CheckoutComponent implements OnInit {
   private readonly _ActivatedRoute = inject(ActivatedRoute)
   private readonly _OrderService = inject(OrderService)
   private readonly _ToastrService = inject(ToastrService);
-  errorMessage: WritableSignal<string> = signal('');
   cartId: WritableSignal<string> = signal('');
   isLoading: WritableSignal<boolean> = signal(false);
   
@@ -42,9 +41,6 @@ export class CheckoutComponent implements OnInit {
         if (res.status === "success") {
           window.open(res.session.url, "_self")
         }
-      },
-      error: (err) => {
-        this._ToastrService.error(err?.error?.message);
       },
       complete: () => {
         this.isLoading.set(false);

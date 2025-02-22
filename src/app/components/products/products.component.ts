@@ -42,9 +42,6 @@ export class ProductsComponent implements OnInit, OnDestroy {
         this.page.set(this.metaData().currentPage);
         this.numberOfPages.set(this.metaData().numberOfPages);
       },
-      error: (err) => {
-        this._ToastrService.error(err?.error?.message);
-      },
       complete: () => {
         this.placholderLoading.set(false);
       }

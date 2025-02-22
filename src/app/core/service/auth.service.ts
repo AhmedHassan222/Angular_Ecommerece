@@ -14,6 +14,7 @@ export class AuthService {
   private readonly _HttpClient = inject(HttpClient);
   private readonly _Router = inject(Router);
   private platform = inject(PLATFORM_ID);
+
   isLogin: WritableSignal<boolean> = signal(false);
 
   constructor() {
@@ -53,20 +54,10 @@ export class AuthService {
     return this._HttpClient.put(`${environment.baseUrl}/api/v1/auth/resetPassword`, model);
   }
   changePassword(model: object): Observable<any> {
-    return this._HttpClient.put(`${environment.baseUrl}/api/v1/users/changeMyPassword`, model, {
-      headers: {
-        token: (localStorage.getItem("token") || '')
-      }
-    });
+    return this._HttpClient.put(`${environment.baseUrl}/api/v1/users/changeMyPassword`, model);
   }
   updateProfile(model: object): Observable<any> {
-    return this._HttpClient.put(`${environment.baseUrl}/api/v1/users/updateMe`, model,
-      {
-        headers: {
-          token: localStorage.getItem('token') as string
-        }
-      }
-    )
+    return this._HttpClient.put(`${environment.baseUrl}/api/v1/users/updateMe`, model)
   }
   getUserDetails(id: string): Observable<any> {
     return this._HttpClient.get(`${environment.baseUrl}/api/v1/users/${id}`)

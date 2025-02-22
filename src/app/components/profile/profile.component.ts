@@ -4,7 +4,6 @@ import { User } from '../../core/models/user';
 import { isPlatformBrowser, TitleCasePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
-import { platformBrowser } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-profile',
@@ -34,5 +33,6 @@ export class ProfileComponent implements OnInit {
     this._AuthService.logOut();
     this._Router.navigate(['/login'])
     this._AuthService.saveUserData();
+    this._AuthService.isLogin.set(false);
   }
 }

@@ -36,9 +36,6 @@ export class ProductDetailsComponent implements OnInit {
           next: (res) => {
             this.product.set(res?.data)
           },
-          error: (err) => {
-            this._ToastrService.error(err?.error?.message);
-          },
           complete: () => {
             setTimeout(() => {
               this.placeholderLoading.set(false);
@@ -62,7 +59,7 @@ export class ProductDetailsComponent implements OnInit {
     this.isLoadingFavarite.set(true);
     this._FavariteService.addToFavarite(id);
     setTimeout(() => {
-      this.isLoadingCart.set(false)
+      this.isLoadingFavarite.set(false)
     }, 2000);
   }
 }

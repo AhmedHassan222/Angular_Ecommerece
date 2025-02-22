@@ -13,11 +13,7 @@ export class CartService {
   numberOfItemsInCart: WritableSignal<number> = signal<number>(0);
 
   addToCart(productId: string): void {
-    this._HttpClient.post(`${environment.baseUrl}/api/v1/cart`, { productId }, {
-      headers: {
-        token: localStorage.getItem('token') || ""
-      }
-    }).subscribe({
+    this._HttpClient.post(`${environment.baseUrl}/api/v1/cart`, { productId }).subscribe({
       next: (res: any) => {
         // this.updateCartCount(res?.data?.products?.length);
         this.numberOfItemsInCart.set(res?.data?.products?.length);
@@ -33,36 +29,18 @@ export class CartService {
     console.log(typeof count)
     return this._HttpClient.put(`${environment.baseUrl}/api/v1/cart/${id}`, {
       "count": count
-    },
-      {
-        headers: {
-          token: (localStorage.getItem('token') || '')
-        }
-      }
-    )
+    })
   }
 
   getAllPrductsCart(): Observable<any> {
-    return this._HttpClient.get(`${environment.baseUrl}/api/v1/cart`,
-      {
-        headers: {
-          token: (localStorage.getItem('token') || '')
-        }
-      }
-    )
+    return this._HttpClient.get(`${environment.baseUrl}/api/v1/cart`)
   }
   deleteProductFromCart(id: string): Observable<any> {
-    return this._HttpClient.delete(`${environment.baseUrl}/api/v1/cart/${id}`, {
-      headers: { token: (localStorage.getItem('token') || '') }
-    })
+    return this._HttpClient.delete(`${environment.baseUrl}/api/v1/cart/${id}`)
   }
 
   ClearAllProductsFromCart(): Observable<any> {
-    return this._HttpClient.delete(`${environment.baseUrl}/api/v1/cart`, {
-      headers: {
-        token: (localStorage.getItem('token') || '')
-      }
-    })
+    return this._HttpClient.delete(`${environment.baseUrl}/api/v1/cart`)
   }
 
 }

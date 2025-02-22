@@ -1,4 +1,4 @@
-import { Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
+import { Component, EventEmitter, inject, input, InputSignal, Output, signal, WritableSignal } from '@angular/core';
 import { IProduct } from '../../core/models/iproduct';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
@@ -22,7 +22,7 @@ export class ProductGridComponent {
   product: InputSignal<IProduct> = input({} as IProduct);
   styleImage: InputSignal<string> = input('');
   inFavarite: InputSignal<boolean> = input(false);
-  productRemoved = signal<(() => void) | null>(null);
+  @Output() productRemoved = new EventEmitter<void>() 
 
   addToCart(id: string): void {
     this.isLoadingCart.set(true);
@@ -47,10 +47,7 @@ export class ProductGridComponent {
       next: (res) => {
         this._FavariteService.numberOfItemsFavarite.set(res?.data?.length);
         this._ToastrService.error('The product is removed from wishlist');
-        this.productRemoved()?.();
-      },
-      error: (err) => {
-        this._ToastrService.error(err?.error?.message);
+        this.productRemoved.emit();
       },
       complete: () => {
         this.isLoadingFavarite.set(false);

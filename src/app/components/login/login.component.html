@@ -44,7 +44,7 @@
       <p class="fs-6 text-danger">{{errorMessage()}}</p>
       }
       <button type="submit" class="border-0 btn-special py-3 w-100 rounded-1 my-3 fs-6 fw-normal  text-white"
-        [disabled]="loginForm().invalid || isLoading">
+        [disabled]="loginForm().invalid || isLoading()">
         Sign in
         @if (isLoading()) {
         <i class="fa-spin fa-spinner fa ms-2"> </i>

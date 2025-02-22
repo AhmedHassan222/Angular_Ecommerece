@@ -26,9 +26,6 @@ export class OrdersComponent implements OnInit {
       this._OrderService.getAllOrders(user.id).subscribe({
         next: (res) => {
           this.orders = res;
-        },
-        error: (err) => {
-          this._ToastrService.error(err?.error?.message);
         }
       })
     }

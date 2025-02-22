@@ -2,7 +2,6 @@ import { IProduct } from '../../core/models/iproduct';
 import { ProductService } from './../../core/service/product.service';
 import { Component, inject, input, InputSignal, OnInit, signal, WritableSignal } from '@angular/core';
 import { CartService } from '../../core/service/cart.service';
-import { ToastrService } from 'ngx-toastr';
 import { FavariteService } from '../../core/service/favarite.service';
 import { PlacholderLoadingComponent } from '../placholder-loading/placholder-loading.component';
 import { ProductGridComponent } from "../product-grid/product-grid.component";
@@ -18,7 +17,6 @@ export class RelatedProductComponent implements OnInit {
   private readonly _ProductService = inject(ProductService);
   private readonly _CartService = inject(CartService);
   private readonly _FavariteService = inject(FavariteService);
-  private readonly _ToastrService = inject(ToastrService);
   products: WritableSignal<IProduct[]> = signal([]);
   relatedProducts: WritableSignal<IProduct[]> = signal([]);
   isLoading: WritableSignal<boolean> = signal(false);
@@ -31,9 +29,6 @@ export class RelatedProductComponent implements OnInit {
       next: (res) => {
         this.products.set(res?.data);
         this.relatedProducts.set(this.products().filter(p => p.category.name === categoryName && p.brand.name === brandName));
-      },
-      error: (err) => {
-        this._ToastrService.error(err?.error?.message);
       },
       complete: () => {
         setTimeout(() => {

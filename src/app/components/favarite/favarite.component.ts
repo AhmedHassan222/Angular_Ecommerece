@@ -14,7 +14,7 @@ import { ProductGridComponent } from "../product-grid/product-grid.component";
   templateUrl: './favarite.component.html',
   styleUrl: './favarite.component.scss'
 })
-export class FavariteComponent implements OnInit, OnDestroy {
+export class FavariteComponent implements OnInit {
   private readonly _FavariteService = inject(FavariteService);
   private readonly _CartService = inject(CartService);
   private readonly _ToastrService = inject(ToastrService);
@@ -28,12 +28,9 @@ export class FavariteComponent implements OnInit, OnDestroy {
 
   // functons >>
   getAllProductsFavarite() {
-    this.getAllProductSubscribe = this._FavariteService.getAllPrductsFavarites().subscribe({
+    this._FavariteService.getAllPrductsFavarites().subscribe({
       next: (res) => {
-        this.prodcuts.set(res.data);
-      },
-      error: (err) => {
-        this._ToastrService.error(err?.error?.message);
+        this.prodcuts.set(res?.data);
       },
       complete: () => {
         setTimeout(() => {
@@ -44,9 +41,6 @@ export class FavariteComponent implements OnInit, OnDestroy {
   }
   ngOnInit(): void {
     this.getAllProductsFavarite();
-  }
-  ngOnDestroy(): void {
-    this.getAllProductSubscribe?.unsubscribe();
   }
 
   addToCart(id: string): void {
@@ -59,20 +53,4 @@ export class FavariteComponent implements OnInit, OnDestroy {
 
 
 
-  removeFromFavarite(id: string) {
-    this.isLoadingFavarite.set(true);
-    this._FavariteService.deleteProductFromFavarite(id).subscribe({
-      next: (res) => {
-        this._FavariteService.numberOfItemsFavarite.set(res?.data?.length);
-        this._ToastrService.error('The product is removed from wishlist');
-        this.getAllProductsFavarite();
-      },
-      error: (err) => {
-        this._ToastrService.error(err?.error?.message);
-      },
-      complete: () => {
-        this.isLoadingFavarite.set(false);
-      }
-    })
-  }
 }

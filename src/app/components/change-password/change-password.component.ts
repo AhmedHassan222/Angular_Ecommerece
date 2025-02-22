@@ -3,7 +3,6 @@ import { Component, inject, WritableSignal, signal } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
@@ -35,10 +34,6 @@ export class ChangePasswordComponent {
           this._Router.navigate(['/auth/login']);
           this._ToastrService.success('Password has been changed')
         }
-      },
-      error: (err: HttpErrorResponse) => {
-        this._ToastrService.error(err?.error?.message)
-
       },
       complete: () => {
         this.isLoading.set(false);

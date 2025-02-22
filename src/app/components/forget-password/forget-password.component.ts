@@ -90,9 +90,6 @@ export class ForgetPasswordComponent {
         this._AuthSErvice.saveUserData();
         this._Router.navigate(['/'])
       },
-      error: (err) => {
-        this.errorMessage.set(err?.error?.message);
-      },
       complete: () => {
         this.isLoading.set(false);
       }
