@@ -1,4 +1,4 @@
-import { User } from './../../core/Interfaces/user';
+import { User } from '../../core/models/user';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { AuthService } from '../../core/service/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';

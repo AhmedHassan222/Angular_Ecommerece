@@ -1,5 +1,5 @@
 import { Component, inject, input, InputSignal, signal, WritableSignal } from '@angular/core';
-import { IProduct } from '../../core/Interfaces/IProduct';
+import { IProduct } from '../../core/models/iproduct';
 import { RouterLink } from '@angular/router';
 import { CurrencyPipe } from '@angular/common';
 import { CartService } from '../../core/service/cart.service';

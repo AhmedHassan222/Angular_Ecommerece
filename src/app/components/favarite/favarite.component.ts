@@ -2,7 +2,7 @@ import { Component, inject, OnDestroy, OnInit, signal, WritableSignal } from '@a
 import { FavariteService } from '../../core/service/favarite.service';
 import { CartService } from '../../core/service/cart.service';
 import { Subscription } from 'rxjs';
-import { IProduct } from '../../core/Interfaces/IProduct';
+import { IProduct } from '../../core/models/iproduct';
 import { ToastrService } from 'ngx-toastr';
 import { PlacholderLoadingComponent } from "../placholder-loading/placholder-loading.component";
 import { ProductGridComponent } from "../product-grid/product-grid.component";

@@ -1,6 +1,6 @@
 import { Component, inject, OnInit, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { User } from '../../core/Interfaces/user';
+import { User } from '../../core/models/user';
 import { isPlatformBrowser, TitleCasePipe } from '@angular/common';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../core/service/auth.service';
@@ -34,6 +34,5 @@ export class ProfileComponent implements OnInit {
     this._AuthService.logOut();
     this._Router.navigate(['/login'])
     this._AuthService.saveUserData();
-    this._AuthService.userData.next(null);
   }
 }

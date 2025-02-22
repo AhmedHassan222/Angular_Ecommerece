@@ -1,5 +1,5 @@
 import { CurrencyPipe } from '@angular/common';
-import { IProductsInCart } from '../../core/Interfaces/iproducts-in-cart';
+import { IProductsInCart } from '../../core/models/iproducts-in-cart';
 import { CartService } from './../../core/service/cart.service';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';
 import { RouterLink } from '@angular/router';

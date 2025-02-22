@@ -20,24 +20,16 @@ export class MainNavbarComponent implements OnInit {
   private readonly _CartService = inject(CartService)
   private readonly _FavariteService = inject(FavariteService)
   menu: WritableSignal<boolean> = signal(false);
-  isLogin: WritableSignal<boolean> = signal(false);
   cartCount: Signal<number> = computed(() => this._CartService.numberOfItemsInCart());
   favariteCount: Signal<number> = computed(() => this._FavariteService.numberOfItemsFavarite());
+  userLogin: Signal<boolean> = computed(() => this._AuthService.isLogin());
 
   openMenu(): void {
     this.menu.update(val => !val);
   }
 
-  private setupUserDataListener(): void {
-    this._AuthService.userData.subscribe({
-      next: (userData) => {
-        this.isLogin.set(!!userData);
-      },
-    });
-  }
-
   ngOnInit(): void {
-    this.setupUserDataListener();
+    this._AuthService.saveUserData();
     this.getCountFavAndCart();
   }
   getCountFavAndCart() {

@@ -1,4 +1,4 @@
-import { IProduct } from './../../core/Interfaces/IProduct';
+import { IProduct } from '../../core/models/iproduct';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService } from './../../core/service/product.service';
 import { Component, inject, OnInit, signal, WritableSignal } from '@angular/core';

@@ -1,4 +1,4 @@
-import { IProduct } from '../../core/Interfaces/IProduct';
+import { IProduct } from '../../core/models/iproduct';
 import { ProductService } from './../../core/service/product.service';
 import { Component, inject, input, InputSignal, OnInit, signal, WritableSignal } from '@angular/core';
 import { CartService } from '../../core/service/cart.service';

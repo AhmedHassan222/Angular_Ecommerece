@@ -1,9 +1,9 @@
 import { jwtDecode } from 'jwt-decode';
 import { OrderService } from './../../core/service/order.service';
 import { Component, inject, OnInit, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
-import { User } from '../../core/Interfaces/user';
+import { User } from '../../core/models/user';
 import { CurrencyPipe, DatePipe, isPlatformBrowser } from '@angular/common';
-import { Order } from '../../core/Interfaces/order';
+import { Order } from '../../core/models/order';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({

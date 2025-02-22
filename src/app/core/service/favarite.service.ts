@@ -1,34 +1,16 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, WritableSignal, inject, signal } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { environment } from '../environments/environment';
-import { ProductService } from './product.service';
-import { CartService } from './cart.service';
+import {  Observable } from 'rxjs';
+import { environment } from '../../../environments/environment';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FavariteService {
-  // using signal 
+  private readonly _HttpClient = inject(HttpClient)
+  private readonly _ToastrService = inject(ToastrService)
   numberOfItemsFavarite:WritableSignal<number> = signal(0);
-
-
-  // // end
-  // // start here 
-  // private favariteCount = new BehaviorSubject<number>(0);
-  // favariteCount$ = this.favariteCount.asObservable();
-
-
-  // updatefavariteCount(count: number): void {
-  //   this.favariteCount.next(count);
-  // }
-
-
-  // end here
-  _HttpClient = inject(HttpClient)
-  _CartService = inject(CartService)
-  _ToastrService = inject(ToastrService)
 
 
   addToFavarite(id: string): void {

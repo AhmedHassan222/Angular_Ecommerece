@@ -1,10 +1,11 @@
-import { environment } from './../environments/environment';
+import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, PLATFORM_ID, signal, WritableSignal } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +14,10 @@ export class AuthService {
   private readonly _HttpClient = inject(HttpClient);
   private readonly _Router = inject(Router);
   private platform = inject(PLATFORM_ID);
+  isLogin: WritableSignal<boolean> = signal(false);
 
-  userData: BehaviorSubject<any> = new BehaviorSubject(null);
   constructor() {
-    if (isPlatformBrowser(this.platform)) {
-      if (localStorage.getItem('token')) {
-        this.saveUserData();
-      }
-    }
+    this.saveUserData();
   }
   register(model: object): Observable<any> {
     return this._HttpClient.post(`${environment.baseUrl}/api/v1/auth/signup`, model);
@@ -34,16 +31,16 @@ export class AuthService {
       const token = localStorage.getItem('token');
       if (token) {
         try {
-          const decoded = jwtDecode(token);
-          this.userData.next(decoded);
+          this.isLogin.set(true);
         } catch (error) {
+          this.isLogin.set(false);
           localStorage.removeItem('token');
         }
       }
     }
   };
   logOut() {
-    localStorage.removeItem('token');
+    if (isPlatformBrowser(this.platform)) localStorage.removeItem('token');
     this._Router.navigate(['/auth/login'])
   }
   verifyEmail(model: object): Observable<any> {

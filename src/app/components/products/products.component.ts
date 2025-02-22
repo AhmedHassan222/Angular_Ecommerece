@@ -2,12 +2,12 @@ import { ProductService } from './../../core/service/product.service';
 import { Component, OnDestroy, OnInit, WritableSignal, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { IProduct } from '../../core/Interfaces/IProduct';
 import { SearchPipe } from '../../core/pipes/search.pipe';
 import { ToastrService } from 'ngx-toastr';
 import { PlacholderLoadingComponent } from "../placholder-loading/placholder-loading.component";
-import { MetaDataProduct } from '../../core/Interfaces/meta-data-product';
+import { MetaDataProduct } from '../../core/models/meta-data-product';
 import { ProductGridComponent } from '../product-grid/product-grid.component';
+import { IProduct } from '../../core/models/iproduct';
 
 @Component({
   selector: 'app-products',
