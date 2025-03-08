@@ -1,6 +1,5 @@
 {
   "routes": [
-    "/",
     "/allorders",
     "/cart",
     "/change-password",
